@@ -1,0 +1,79 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {},
+      "host": {}
+    }
+  },
+  "packages": {
+    "InstaRent.Catalog.Domain.Shared": {
+      "path": "src/InstaRent.Catalog.Domain.Shared/InstaRent.Catalog.Domain.Shared.abppkg.json",
+      "folder": "src"
+    },
+    "InstaRent.Catalog.Domain": {
+      "path": "src/InstaRent.Catalog.Domain/InstaRent.Catalog.Domain.abppkg.json",
+      "folder": "src"
+    },
+    "InstaRent.Catalog.Application.Contracts": {
+      "path": "src/InstaRent.Catalog.Application.Contracts/InstaRent.Catalog.Application.Contracts.abppkg.json",
+      "folder": "src"
+    },
+    "InstaRent.Catalog.Application": {
+      "path": "src/InstaRent.Catalog.Application/InstaRent.Catalog.Application.abppkg.json",
+      "folder": "src"
+    },
+    "InstaRent.Catalog.EntityFrameworkCore": {
+      "path": "src/InstaRent.Catalog.EntityFrameworkCore/InstaRent.Catalog.EntityFrameworkCore.abppkg.json",
+      "folder": "src"
+    },
+    "InstaRent.Catalog.MongoDB": {
+      "path": "src/InstaRent.Catalog.MongoDB/InstaRent.Catalog.MongoDB.abppkg.json",
+      "folder": "src"
+    },
+    "InstaRent.Catalog.HttpApi": {
+      "path": "src/InstaRent.Catalog.HttpApi/InstaRent.Catalog.HttpApi.abppkg.json",
+      "folder": "src"
+    },
+    "InstaRent.Catalog.HttpApi.Client": {
+      "path": "src/InstaRent.Catalog.HttpApi.Client/InstaRent.Catalog.HttpApi.Client.abppkg.json",
+      "folder": "src"
+    },
+    "InstaRent.Catalog.TestBase": {
+      "path": "test/InstaRent.Catalog.TestBase/InstaRent.Catalog.TestBase.abppkg.json",
+      "folder": "test"
+    },
+    "InstaRent.Catalog.EntityFrameworkCore.Tests": {
+      "path": "test/InstaRent.Catalog.EntityFrameworkCore.Tests/InstaRent.Catalog.EntityFrameworkCore.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "InstaRent.Catalog.MongoDB.Tests": {
+      "path": "test/InstaRent.Catalog.MongoDB.Tests/InstaRent.Catalog.MongoDB.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "InstaRent.Catalog.Domain.Tests": {
+      "path": "test/InstaRent.Catalog.Domain.Tests/InstaRent.Catalog.Domain.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "InstaRent.Catalog.Application.Tests": {
+      "path": "test/InstaRent.Catalog.Application.Tests/InstaRent.Catalog.Application.Tests.abppkg.json",
+      "folder": "test"
+    },
+    "InstaRent.Catalog.HttpApi.Host": {
+      "path": "host/InstaRent.Catalog.HttpApi.Host/InstaRent.Catalog.HttpApi.Host.abppkg.json",
+      "folder": "host"
+    },
+    "InstaRent.Catalog.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/InstaRent.Catalog.HttpApi.Client.ConsoleTestApp/InstaRent.Catalog.HttpApi.Client.ConsoleTestApp.abppkg.json",
+      "folder": "test"
+    },
+    "InstaRent.Catalog.IdentityServer": {
+      "path": "host/InstaRent.Catalog.IdentityServer/InstaRent.Catalog.IdentityServer.abppkg.json",
+      "folder": "host"
+    },
+    "InstaRent.Catalog.Host.Shared": {
+      "path": "host/InstaRent.Catalog.Host.Shared/InstaRent.Catalog.Host.Shared.abppkg.json",
+      "folder": "host"
+    }
+  }
+}

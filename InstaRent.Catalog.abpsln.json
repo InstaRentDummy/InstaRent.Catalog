@@ -1,0 +1,7 @@
+{
+  "modules": {
+    "InstaRent.Catalog": {
+      "path": "InstaRent.Catalog.abpmdl.json"
+    }
+  }
+}
