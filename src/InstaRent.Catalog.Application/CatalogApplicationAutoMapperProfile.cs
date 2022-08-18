@@ -1,5 +1,6 @@
 using InstaRent.Catalog.TotalClicks;
 using InstaRent.Catalog.DailyClicks;
+using InstaRent.Catalog.UserPreferences;
 using System;
 using InstaRent.Catalog.Shared;
 using Volo.Abp.AutoMapper;
@@ -25,5 +26,7 @@ public class CatalogApplicationAutoMapperProfile : Profile
         CreateMap<TotalClick, TotalClickDto>();
         CreateMap<TotalClickWithNavigationProperties, TotalClickWithNavigationPropertiesDto>();
         CreateMap<Bag, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.bag_name));
+
+        CreateMap<UserPreference, UserPreferenceDto>();
     }
 }

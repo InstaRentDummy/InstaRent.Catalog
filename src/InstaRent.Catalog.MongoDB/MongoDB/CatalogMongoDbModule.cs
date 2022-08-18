@@ -1,4 +1,7 @@
 ﻿using InstaRent.Catalog.Bags;
+using InstaRent.Catalog.DailyClicks;
+using InstaRent.Catalog.TotalClicks;
+using InstaRent.Catalog.UserPreferences;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Volo.Abp.Modularity;
@@ -20,6 +23,10 @@ public class CatalogMongoDbModule : AbpModule
              * options.AddRepository<Question, MongoQuestionRepository>();
              */
             options.AddRepository<Bag, Bags.MongoBagRepository>();
+            options.AddRepository<DailyClick, DailyClicks.MongoDailyClickRepository>();
+            options.AddRepository<TotalClick, TotalClicks.MongoTotalClickRepository>();
+            options.AddRepository<UserPreference, UserPreferences.MongoUserPreferenceRepository>();
+            
         });
     }
 }
