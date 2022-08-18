@@ -48,14 +48,14 @@ namespace InstaRent.Catalog.Bags
             Check.NotNull(description, nameof(description));
             Check.Length(status, nameof(status), BagConsts.statusMaxLength, 0);
             Check.NotNull(renter_id, nameof(renter_id));
-            bag_name = bag_name;
-            description = description;
-            image_urls = image_urls;
-            rental_start_date = rental_start_date;
-            rental_end_date = rental_end_date;
-            tags = tags;
-            status = status;
-            renter_id = renter_id;
+            this.bag_name = bag_name;
+            this.description = description;
+            this.image_urls = image_urls;
+            this.rental_start_date = rental_start_date;
+            this.rental_end_date = rental_end_date;
+            this.tags = tags;
+            this.status = status;
+            this.renter_id = renter_id;
         }
     }
 }
