@@ -38,13 +38,15 @@ namespace InstaRent.Catalog.DailyClicks
             string filterText = null,
             long? clicksMin = null,
             long? clicksMax = null,
+            DateTime? lastModificationTimeMin = null,
+            DateTime? lastModificationTimeMax = null, 
             Guid? bagId = null,
             string sorting = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
             CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, bagId);
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
             var dailyClicks = await query.OrderBy(string.IsNullOrWhiteSpace(sorting) ? DailyClickConsts.GetDefaultSorting(false) : sorting.Split('.').Last())
                 .As<IMongoQueryable<DailyClick>>()
                 .PageBy<DailyClick, IMongoQueryable<DailyClick>>(skipCount, maxResultCount)
@@ -63,12 +65,14 @@ namespace InstaRent.Catalog.DailyClicks
             string filterText = null,
             long? clicksMin = null,
             long? clicksMax = null,
+            DateTime? lastModificationTimeMin = null,
+            DateTime? lastModificationTimeMax = null,
             string sorting = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
             CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax);
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax );
             query = query.OrderBy(string.IsNullOrWhiteSpace(sorting) ? DailyClickConsts.GetDefaultSorting(false) : sorting);
             return await query.As<IMongoQueryable<DailyClick>>()
                 .PageBy<DailyClick, IMongoQueryable<DailyClick>>(skipCount, maxResultCount)
@@ -79,10 +83,12 @@ namespace InstaRent.Catalog.DailyClicks
            string filterText = null,
            long? clicksMin = null,
            long? clicksMax = null,
+           DateTime? lastModificationTimeMin = null,
+           DateTime? lastModificationTimeMax = null,
            Guid? bagId = null,
            CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, bagId);
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
             return await query.As<IMongoQueryable<DailyClick>>().LongCountAsync(GetCancellationToken(cancellationToken));
         }
 
@@ -91,12 +97,16 @@ namespace InstaRent.Catalog.DailyClicks
             string filterText,
             long? clicksMin = null,
             long? clicksMax = null,
+            DateTime? lastModificationTimeMin = null,
+            DateTime? lastModificationTimeMax = null,
             Guid? bagId = null)
         {
             return query
                 .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => true)
                     .WhereIf(clicksMin.HasValue, e => e.clicks >= clicksMin.Value)
                     .WhereIf(clicksMax.HasValue, e => e.clicks <= clicksMax.Value)
+                    .WhereIf(lastModificationTimeMin.HasValue, e => e.LastModificationTime <= lastModificationTimeMin.Value)
+                    .WhereIf(lastModificationTimeMax.HasValue, e => e.LastModificationTime <= lastModificationTimeMax.Value)
                     .WhereIf(bagId != null && bagId != Guid.Empty, e => e.BagId == bagId);
         }
     }

@@ -10,6 +10,8 @@ namespace InstaRent.Catalog.DailyClicks
         public long? clicksMin { get; set; }
         public long? clicksMax { get; set; }
         public Guid? BagId { get; set; }
+        public DateTime? lastModificationTimeMin { get; set; }
+        public DateTime? lastModificationTimeMax { get; set; }
 
         public GetDailyClicksInput()
         {

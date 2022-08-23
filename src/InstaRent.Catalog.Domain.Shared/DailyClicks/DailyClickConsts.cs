@@ -2,7 +2,7 @@ namespace InstaRent.Catalog.DailyClicks
 {
     public static class DailyClickConsts
     {
-        private const string DefaultSorting = "{0}clicks asc";
+        private const string DefaultSorting = "{0}Clicks desc";
 
         public static string GetDefaultSorting(bool withEntityName)
         {

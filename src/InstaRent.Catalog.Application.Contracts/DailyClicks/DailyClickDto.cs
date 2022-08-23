@@ -4,7 +4,7 @@ using Volo.Abp.Domain.Entities;
 
 namespace InstaRent.Catalog.DailyClicks
 {
-    public class DailyClickDto : EntityDto<long>, IHasConcurrencyStamp
+    public class DailyClickDto : AuditedEntityDto<long>, IHasConcurrencyStamp
     {
         public long clicks { get; set; }
         public Guid? BagId { get; set; }

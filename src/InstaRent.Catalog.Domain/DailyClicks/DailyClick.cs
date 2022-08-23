@@ -1,19 +1,10 @@
-using InstaRent.Catalog.Bags;
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
-using Volo.Abp.MultiTenancy;
-using JetBrains.Annotations;
-using Volo.Abp.Domain.Entities;
-
-using Volo.Abp;
 
 namespace InstaRent.Catalog.DailyClicks
 {
-    public class DailyClick : Entity<long>, IHasConcurrencyStamp
+    public class DailyClick : AuditedEntity<long>, IHasConcurrencyStamp
     {
         public virtual long clicks { get; set; }
         public Guid? BagId { get; set; }
@@ -29,7 +20,7 @@ namespace InstaRent.Catalog.DailyClicks
         {
             ConcurrencyStamp = Guid.NewGuid().ToString("N");
 
-            clicks = clicks;
+            this.clicks = clicks;
             BagId = bagId;
         }
 
