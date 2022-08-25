@@ -4,10 +4,10 @@ using Volo.Abp.Domain.Entities;
 
 namespace InstaRent.Catalog.UserPreferences
 {
-    public class UserPreferenceDto : AuditedEntityDto<long>, IHasConcurrencyStamp
+    public class UserPreferenceDto : AuditedEntityDto<Guid>, IHasConcurrencyStamp
     {
         public string UserId { get; set; }
-        public string Tags { get; set; }
+        public string[] Tags { get; set; }
 
         public string ConcurrencyStamp { get; set; }
     }

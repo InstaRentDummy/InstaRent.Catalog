@@ -1,31 +1,28 @@
-﻿using InstaRent.Catalog.Bags;
-using InstaRent.Catalog.DailyClicks;
-using InstaRent.Catalog.TotalClicks;
+﻿using InstaRent.Catalog.DailyClicks;
+using InstaRent.Catalog.UserPreferences;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
 
 namespace InstaRent.Catalog
 {
     public class CatalogListAppService : ApplicationService, ICatalogListAppService
     {
-
+        private readonly IUserPreferenceRepository _userPreferenceRepository;
         private readonly IDailyClickRepository _dailyClickRepository;
 
-        public CatalogListAppService(IDailyClickRepository dailyClickRepository)
+        public CatalogListAppService(IDailyClickRepository dailyClickRepository, IUserPreferenceRepository userPreferenceRepository)
         {
-            _dailyClickRepository = dailyClickRepository; 
+            _dailyClickRepository = dailyClickRepository;
+            _userPreferenceRepository = userPreferenceRepository;
         }
 
         public virtual async Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(string period)
         {
             GetDailyClicksInput input = new GetDailyClicksInput();
-            switch(period)
+            switch (period)
             {
                 case "daily":
                     {
@@ -39,7 +36,7 @@ namespace InstaRent.Catalog
                         input.lastModificationTimeMax = DateTime.Now;
                         break;
                     }
-             default:
+                default:
                     {
                         input.lastModificationTimeMin = DateTime.Now.AddDays(-30);
                         input.lastModificationTimeMax = DateTime.Now;
@@ -56,6 +53,26 @@ namespace InstaRent.Catalog
                 Items = ObjectMapper.Map<List<DailyClickWithNavigationProperties>, List<DailyClickWithNavigationPropertiesDto>>(items)
             };
         }
+
+
+        public virtual async Task<PagedResultDto<UserPreferenceWithNavigationPropertiesDto>> GetRecommendationsAsync(string userId)
+        {
+            GetUserPreferencesInput input = new GetUserPreferencesInput()
+            {
+                UserId = userId
+            };
+
+            var totalCount = await _userPreferenceRepository.GetCountAsync(input.UserId);
+            var items = await _userPreferenceRepository.GetListWithNavigationPropertiesAsync(input.UserId);
+
+            var response = new PagedResultDto<UserPreferenceWithNavigationPropertiesDto>
+            {
+                TotalCount = totalCount,
+                Items = ObjectMapper.Map<List<UserPreferenceWithNavigationProperties>, List<UserPreferenceWithNavigationPropertiesDto>>(items)
+            };
+
+            return response;
+        }
     }
-     
+
 }

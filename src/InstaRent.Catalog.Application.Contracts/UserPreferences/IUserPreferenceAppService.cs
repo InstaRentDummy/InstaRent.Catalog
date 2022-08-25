@@ -9,12 +9,12 @@ namespace InstaRent.Catalog.UserPreferences
     {
         Task<PagedResultDto<UserPreferenceDto>> GetListAsync(GetUserPreferencesInput input);
 
-        Task<UserPreferenceDto> GetAsync(long id);
+        Task<UserPreferenceDto> GetAsync(Guid id);
 
-        Task DeleteAsync(long id);
+        Task DeleteAsync(Guid id);
 
         Task<UserPreferenceDto> CreateAsync(UserPreferenceCreateDto input);
 
-        Task<UserPreferenceDto> UpdateAsync(long id, UserPreferenceUpdateDto input);
+        Task<UserPreferenceDto> UpdateAsync(Guid id, UserPreferenceUpdateDto input);
     }
 }

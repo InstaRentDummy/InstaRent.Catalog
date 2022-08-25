@@ -1,4 +1,5 @@
 ﻿using InstaRent.Catalog.DailyClicks;
+using InstaRent.Catalog.UserPreferences;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Volo.Abp;
@@ -28,7 +29,15 @@ namespace InstaRent.Catalog
         {
             return _catalogListAppService.GetTrendingListAsync(period);
         }
-         
+
+        //GetRecommendationList
+        [HttpGet]
+        [Route("recommendations/{userId}")]
+        public Task<PagedResultDto<UserPreferenceWithNavigationPropertiesDto>> GetRecommendationsAsync(string userId)
+        {
+            return _catalogListAppService.GetRecommendationsAsync(userId);
+        }
+
     }
 
 }

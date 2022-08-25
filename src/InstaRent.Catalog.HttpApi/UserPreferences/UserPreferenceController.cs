@@ -1,10 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Volo.Abp;
-using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Application.Dtos;
-using InstaRent.Catalog.UserPreferences;
+using Volo.Abp.AspNetCore.Mvc;
 
 namespace InstaRent.Catalog.UserPreferences
 {
@@ -29,7 +28,7 @@ namespace InstaRent.Catalog.UserPreferences
 
         [HttpGet]
         [Route("{id}")]
-        public virtual Task<UserPreferenceDto> GetAsync(long id)
+        public virtual Task<UserPreferenceDto> GetAsync(Guid id)
         {
             return _userPreferencesAppService.GetAsync(id);
         }
@@ -42,14 +41,14 @@ namespace InstaRent.Catalog.UserPreferences
 
         [HttpPut]
         [Route("{id}")]
-        public virtual Task<UserPreferenceDto> UpdateAsync(long id, UserPreferenceUpdateDto input)
+        public virtual Task<UserPreferenceDto> UpdateAsync(Guid id, UserPreferenceUpdateDto input)
         {
             return _userPreferencesAppService.UpdateAsync(id, input);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public virtual Task DeleteAsync(long id)
+        public virtual Task DeleteAsync(Guid id)
         {
             return _userPreferencesAppService.DeleteAsync(id);
         }

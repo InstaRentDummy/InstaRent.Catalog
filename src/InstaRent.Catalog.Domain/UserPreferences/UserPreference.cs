@@ -6,13 +6,13 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace InstaRent.Catalog.UserPreferences
 {
-    public class UserPreference : AuditedEntity<long>, IHasConcurrencyStamp
+    public class UserPreference : AuditedEntity<Guid>, IHasConcurrencyStamp
     {
         [CanBeNull]
         public virtual string UserId { get; set; }
 
         [CanBeNull]
-        public virtual string Tags { get; set; }
+        public virtual string[] Tags { get; set; }
 
         public string ConcurrencyStamp { get; set; }
 
@@ -21,10 +21,11 @@ namespace InstaRent.Catalog.UserPreferences
 
         }
 
-        public UserPreference(string userId, string tags)
+        public UserPreference(Guid id, string userId, string[] tags)
         {
             ConcurrencyStamp = Guid.NewGuid().ToString("N");
             Check.Length(userId, nameof(userId), UserPreferenceConsts.UserIdMaxLength, 0);
+            Id = id;
             UserId = userId;
             Tags = tags;
         }

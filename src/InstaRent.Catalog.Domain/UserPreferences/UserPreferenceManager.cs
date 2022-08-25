@@ -1,11 +1,9 @@
+using JetBrains.Annotations;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Volo.Abp.Domain.Repositories;
-using Volo.Abp.Domain.Services;
 using Volo.Abp.Data;
+using Volo.Abp.Domain.Services;
 
 namespace InstaRent.Catalog.UserPreferences
 {
@@ -19,19 +17,18 @@ namespace InstaRent.Catalog.UserPreferences
         }
 
         public async Task<UserPreference> CreateAsync(
-        string userId, string tags)
+        string userId, string[] tags)
         {
             var userPreference = new UserPreference(
-
-             userId, tags
+                GuidGenerator.Create(), userId, tags
              );
 
             return await _userPreferenceRepository.InsertAsync(userPreference);
         }
 
         public async Task<UserPreference> UpdateAsync(
-            long id,
-            string userId, string tags, [CanBeNull] string concurrencyStamp = null
+            Guid id,
+            string userId, string[] tags, [CanBeNull] string concurrencyStamp = null
         )
         {
             var queryable = await _userPreferenceRepository.GetQueryableAsync();
