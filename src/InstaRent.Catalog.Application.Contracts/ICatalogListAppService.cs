@@ -1,5 +1,5 @@
-﻿using InstaRent.Catalog.DailyClicks;
-using InstaRent.Catalog.UserPreferences;
+﻿using InstaRent.Catalog.Bags;
+using InstaRent.Catalog.DailyClicks;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -11,6 +11,6 @@ namespace InstaRent.Catalog
 
         Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(string period);
 
-        Task<PagedResultDto<UserPreferenceWithNavigationPropertiesDto>> GetRecommendationsAsync(string userId);
+        Task<PagedResultDto<BagDto>> GetRecommendationsAsync(string userId);
     }
 }

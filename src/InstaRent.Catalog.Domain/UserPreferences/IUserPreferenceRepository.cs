@@ -1,3 +1,4 @@
+using InstaRent.Catalog.Bags;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -8,7 +9,7 @@ namespace InstaRent.Catalog.UserPreferences
 {
     public interface IUserPreferenceRepository : IRepository<UserPreference, Guid>
     {
-        Task<List<UserPreferenceWithNavigationProperties>> GetListWithNavigationPropertiesAsync(
+        Task<List<Bag>> GetListWithNavigationPropertiesAsync(
            string userId = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,

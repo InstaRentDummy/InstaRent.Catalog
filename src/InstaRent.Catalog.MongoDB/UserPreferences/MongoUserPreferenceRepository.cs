@@ -1,3 +1,4 @@
+using InstaRent.Catalog.Bags;
 using InstaRent.Catalog.MongoDB;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -19,7 +20,7 @@ namespace InstaRent.Catalog.UserPreferences
         {
         }
 
-        public async Task<List<UserPreferenceWithNavigationProperties>> GetListWithNavigationPropertiesAsync(
+        public async Task<List<Bag>> GetListWithNavigationPropertiesAsync(
             string userId = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
@@ -34,12 +35,24 @@ namespace InstaRent.Catalog.UserPreferences
             var tags = userPreferences.First().Tags.OrderBy(x => x).ToList();
 
             var dbContext = await GetDbContextAsync(cancellationToken);
-            return tags.Select(s => new UserPreferenceWithNavigationProperties
+            //return tags.Select(s => new UserPreferenceWithNavigationProperties
+            //{
+            //    Tag = s,
+            //    Bags = dbContext.Bags.AsQueryable().Where(e => e.tags == s).ToList(),
+            //}).ToList();
+            List<Bag> result = new();
+            tags.ForEach(s =>
             {
-                Tag = s,
-                Bags = dbContext.Bags.AsQueryable().Where(e => e.tags == s).ToList(),
+                var bags = dbContext.Bags.AsQueryable().Where(e => e.tags == s).ToList();
 
-            }).ToList();
+                bags.ForEach(x =>
+                {
+                    if (!result.Where(r => r.Id == x.Id).Any())
+                        result.Add(x);
+                });
+            });
+
+            return result.OrderBy(x => x.tags).ToList();
         }
 
         public async Task<List<UserPreference>> GetListAsync(

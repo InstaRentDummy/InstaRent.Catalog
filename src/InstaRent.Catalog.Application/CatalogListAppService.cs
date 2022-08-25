@@ -1,4 +1,5 @@
-﻿using InstaRent.Catalog.DailyClicks;
+﻿using InstaRent.Catalog.Bags;
+using InstaRent.Catalog.DailyClicks;
 using InstaRent.Catalog.UserPreferences;
 using System;
 using System.Collections.Generic;
@@ -55,7 +56,7 @@ namespace InstaRent.Catalog
         }
 
 
-        public virtual async Task<PagedResultDto<UserPreferenceWithNavigationPropertiesDto>> GetRecommendationsAsync(string userId)
+        public virtual async Task<PagedResultDto<BagDto>> GetRecommendationsAsync(string userId)
         {
             GetUserPreferencesInput input = new GetUserPreferencesInput()
             {
@@ -64,11 +65,12 @@ namespace InstaRent.Catalog
 
             var totalCount = await _userPreferenceRepository.GetCountAsync(input.UserId);
             var items = await _userPreferenceRepository.GetListWithNavigationPropertiesAsync(input.UserId);
+            //var testitems = ObjectMapper.Map<List<UserPreferenceWithNavigationProperties>, List<UserPreferenceWithNavigationPropertiesDto>>(items);
 
-            var response = new PagedResultDto<UserPreferenceWithNavigationPropertiesDto>
+            var response = new PagedResultDto<BagDto>
             {
                 TotalCount = totalCount,
-                Items = ObjectMapper.Map<List<UserPreferenceWithNavigationProperties>, List<UserPreferenceWithNavigationPropertiesDto>>(items)
+                Items = ObjectMapper.Map<List<Bag>, List<BagDto>>(items)
             };
 
             return response;
