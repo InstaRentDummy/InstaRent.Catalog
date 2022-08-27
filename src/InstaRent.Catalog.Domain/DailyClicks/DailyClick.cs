@@ -4,7 +4,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace InstaRent.Catalog.DailyClicks
 {
-    public class DailyClick : AuditedEntity<long>, IHasConcurrencyStamp
+    public class DailyClick : AuditedEntity<Guid>, IHasConcurrencyStamp
     {
         public virtual long clicks { get; set; }
         public Guid? BagId { get; set; }
@@ -16,10 +16,10 @@ namespace InstaRent.Catalog.DailyClicks
 
         }
 
-        public DailyClick(Guid? bagId, long clicks)
+        public DailyClick(Guid id, Guid? bagId, long clicks)
         {
             ConcurrencyStamp = Guid.NewGuid().ToString("N");
-
+            Id = id;
             this.clicks = clicks;
             BagId = bagId;
         }

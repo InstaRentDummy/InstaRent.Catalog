@@ -22,7 +22,7 @@ namespace InstaRent.Catalog.DailyClicks
         Guid? bagId, long clicks)
         {
             var dailyClick = new DailyClick(
-
+             GuidGenerator.Create(),
              bagId, clicks
              );
 
@@ -30,7 +30,7 @@ namespace InstaRent.Catalog.DailyClicks
         }
 
         public async Task<DailyClick> UpdateAsync(
-            long id,
+            Guid id,
             Guid? bagId, long clicks, [CanBeNull] string concurrencyStamp = null
         )
         {

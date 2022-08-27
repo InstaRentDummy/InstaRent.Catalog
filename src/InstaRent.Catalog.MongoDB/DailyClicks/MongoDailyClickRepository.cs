@@ -12,14 +12,14 @@ using MongoDB.Driver;
 
 namespace InstaRent.Catalog.DailyClicks
 {
-    public class MongoDailyClickRepository : MongoDbRepository<CatalogMongoDbContext, DailyClick, long>, IDailyClickRepository
+    public class MongoDailyClickRepository : MongoDbRepository<CatalogMongoDbContext, DailyClick, Guid>, IDailyClickRepository
     {
         public MongoDailyClickRepository(IMongoDbContextProvider<CatalogMongoDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }
 
-        public async Task<DailyClickWithNavigationProperties> GetWithNavigationPropertiesAsync(long id, CancellationToken cancellationToken = default)
+        public async Task<DailyClickWithNavigationProperties> GetWithNavigationPropertiesAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var dailyClick = await (await GetMongoQueryableAsync(cancellationToken))
                 .FirstOrDefaultAsync(e => e.Id == id, GetCancellationToken(cancellationToken));

@@ -8,7 +8,7 @@ namespace InstaRent.Catalog.UserPreferences
         [EmailAddress]
         [StringLength(UserPreferenceConsts.UserIdMaxLength)]
         public string UserId { get; set; }
-        public string[] Tags { get; set; }
+        public List<ITag> Tags { get; set; }
 
         public string ConcurrencyStamp { get; set; }
     }

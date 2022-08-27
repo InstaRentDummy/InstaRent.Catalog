@@ -15,14 +15,14 @@ namespace InstaRent.Catalog.Bags
         public virtual string description { get; set; }
 
         [CanBeNull]
-        public virtual string image_urls { get; set; }
+        public virtual string[] image_urls { get; set; }
 
         public virtual DateTime rental_start_date { get; set; }
 
         public virtual DateTime rental_end_date { get; set; }
 
         [CanBeNull]
-        public virtual string tags { get; set; }
+        public virtual string[] tags { get; set; }
 
         [CanBeNull]
         public virtual string status { get; set; }
@@ -37,7 +37,7 @@ namespace InstaRent.Catalog.Bags
 
         }
 
-        public Bag(Guid id, string bag_name, string description, string image_urls, DateTime rental_start_date, DateTime rental_end_date, string tags, string status, string renter_id)
+        public Bag(Guid id, string bag_name, string description, string[] image_urls, DateTime rental_start_date, DateTime rental_end_date, string[] tags, string status, string renter_id)
         {
             ConcurrencyStamp = Guid.NewGuid().ToString("N");
             Id = id;

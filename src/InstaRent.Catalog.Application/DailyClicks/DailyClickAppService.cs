@@ -36,13 +36,13 @@ namespace InstaRent.Catalog.DailyClicks
             };
         }
 
-        public virtual async Task<DailyClickWithNavigationPropertiesDto> GetWithNavigationPropertiesAsync(long id)
+        public virtual async Task<DailyClickWithNavigationPropertiesDto> GetWithNavigationPropertiesAsync(Guid id)
         {
             return ObjectMapper.Map<DailyClickWithNavigationProperties, DailyClickWithNavigationPropertiesDto>
                 (await _dailyClickRepository.GetWithNavigationPropertiesAsync(id));
         }
 
-        public virtual async Task<DailyClickDto> GetAsync(long id)
+        public virtual async Task<DailyClickDto> GetAsync(Guid id)
         {
             return ObjectMapper.Map<DailyClick, DailyClickDto>(await _dailyClickRepository.GetAsync(id));
         }
@@ -63,7 +63,7 @@ namespace InstaRent.Catalog.DailyClicks
             };
         }
 
-        public virtual async Task DeleteAsync(long id)
+        public virtual async Task DeleteAsync(Guid id)
         {
             await _dailyClickRepository.DeleteAsync(id);
         }
@@ -78,7 +78,7 @@ namespace InstaRent.Catalog.DailyClicks
             return ObjectMapper.Map<DailyClick, DailyClickDto>(dailyClick);
         }
 
-        public virtual async Task<DailyClickDto> UpdateAsync(long id, DailyClickUpdateDto input)
+        public virtual async Task<DailyClickDto> UpdateAsync(Guid id, DailyClickUpdateDto input)
         {
 
             var dailyClick = await _dailyClickManager.UpdateAsync(

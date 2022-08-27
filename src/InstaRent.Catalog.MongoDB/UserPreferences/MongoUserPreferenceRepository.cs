@@ -88,9 +88,9 @@ namespace InstaRent.Catalog.UserPreferences
             string tags = null)
         {
             return query
-                .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.UserId.Contains(filterText) || e.Tags.Contains(filterText))
+                .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.UserId.Contains(filterText) ||  e.Tags.Any(t => t.tagname.Contains(filterText)))
                     .WhereIf(!string.IsNullOrWhiteSpace(userId), e => e.UserId.Contains(userId))
-                    .WhereIf(!string.IsNullOrWhiteSpace(tags), e => e.Tags.Contains(tags));
+                    .WhereIf(!string.IsNullOrWhiteSpace(tags), e => e.Tags.Any(t => t.tagname.Contains(tags)));
         }
 
 

@@ -10,16 +10,16 @@ namespace InstaRent.Catalog.DailyClicks
     {
         Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetListAsync(GetDailyClicksInput input);
 
-        Task<DailyClickWithNavigationPropertiesDto> GetWithNavigationPropertiesAsync(long id);
+        Task<DailyClickWithNavigationPropertiesDto> GetWithNavigationPropertiesAsync(Guid id);
 
-        Task<DailyClickDto> GetAsync(long id);
+        Task<DailyClickDto> GetAsync(Guid id);
 
         Task<PagedResultDto<LookupDto<Guid?>>> GetBagLookupAsync(LookupRequestDto input);
 
-        Task DeleteAsync(long id);
+        Task DeleteAsync(Guid id);
 
         Task<DailyClickDto> CreateAsync(DailyClickCreateDto input);
 
-        Task<DailyClickDto> UpdateAsync(long id, DailyClickUpdateDto input);
+        Task<DailyClickDto> UpdateAsync(Guid id, DailyClickUpdateDto input);
     }
 }

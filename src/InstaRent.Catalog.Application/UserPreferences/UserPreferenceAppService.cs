@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.ObjectMapping;
 
 namespace InstaRent.Catalog.UserPreferences
 {
@@ -20,8 +20,12 @@ namespace InstaRent.Catalog.UserPreferences
 
         public virtual async Task<PagedResultDto<UserPreferenceDto>> GetListAsync(GetUserPreferencesInput input)
         {
-            var totalCount = await _userPreferenceRepository.GetCountAsync(input.FilterText, input.UserId, input.Tags);
-            var items = await _userPreferenceRepository.GetListAsync(input.FilterText, input.UserId, input.Tags, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var inputTag = string.Empty;
+            if (input.Tags != null)
+                inputTag = input.Tags[0].tagname;
+
+            var totalCount = await _userPreferenceRepository.GetCountAsync(input.FilterText, input.UserId, inputTag);
+            var items = await _userPreferenceRepository.GetListAsync(input.FilterText, input.UserId, inputTag, input.Sorting, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<UserPreferenceDto>
             {

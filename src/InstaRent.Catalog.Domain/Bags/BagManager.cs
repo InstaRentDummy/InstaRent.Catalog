@@ -20,7 +20,7 @@ namespace InstaRent.Catalog.Bags
         }
 
         public async Task<Bag> CreateAsync(
-        string bag_name, string description, string image_urls, DateTime rental_start_date, DateTime rental_end_date, string tags, string status, string renter_id)
+        string bag_name, string description, string[] image_urls, DateTime rental_start_date, DateTime rental_end_date, string[] tags, string status, string renter_id)
         {
             var bag = new Bag(
              GuidGenerator.Create(),
@@ -32,7 +32,7 @@ namespace InstaRent.Catalog.Bags
 
         public async Task<Bag> UpdateAsync(
             Guid id,
-            string bag_name, string description, string image_urls, DateTime rental_start_date, DateTime rental_end_date, string tags, string status, string renter_id, [CanBeNull] string concurrencyStamp = null
+            string bag_name, string description, string[] image_urls, DateTime rental_start_date, DateTime rental_end_date, string[] tags, string status, string renter_id, [CanBeNull] string concurrencyStamp = null
         )
         {
             var queryable = await _bagRepository.GetQueryableAsync();
