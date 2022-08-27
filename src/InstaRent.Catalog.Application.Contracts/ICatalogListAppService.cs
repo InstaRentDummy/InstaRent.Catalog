@@ -9,7 +9,7 @@ namespace InstaRent.Catalog
     public interface ICatalogListAppService : IApplicationService
     {
 
-        Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(string period);
+        Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(GetDailyClicksInput input);
 
         Task<PagedResultDto<BagDto>> GetRecommendationsAsync(string userId);
     }

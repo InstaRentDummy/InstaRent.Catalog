@@ -27,8 +27,8 @@ namespace InstaRent.Catalog.DailyClicks
             // Assert
             result.TotalCount.ShouldBe(2);
             result.Items.Count.ShouldBe(2);
-            result.Items.Any(x => x.DailyClick.Id == Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8")).ShouldBe(true);
-            result.Items.Any(x => x.DailyClick.Id == Guid.Parse("753aee59-d0a4-44f4-bbcc-8e10f452e347")).ShouldBe(true);
+            result.Items.Any(x => x.Id == Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8")).ShouldBe(true);
+            result.Items.Any(x => x.Id == Guid.Parse("753aee59-d0a4-44f4-bbcc-8e10f452e347")).ShouldBe(true);
         }
 
         [Fact]

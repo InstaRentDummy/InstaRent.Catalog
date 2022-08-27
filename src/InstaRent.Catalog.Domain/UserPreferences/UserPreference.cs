@@ -13,7 +13,7 @@ namespace InstaRent.Catalog.UserPreferences
         public virtual string UserId { get; set; }
 
         [CanBeNull]
-        public virtual  List<ITag> Tags { get; set; }
+        public virtual  List<Tag> Tags { get; set; }
 
         public string ConcurrencyStamp { get; set; }
 
@@ -22,7 +22,7 @@ namespace InstaRent.Catalog.UserPreferences
 
         }
 
-        public UserPreference(Guid id, string userId, List<ITag> tags)
+        public UserPreference(Guid id, string userId, List<Tag> tags)
         {
             ConcurrencyStamp = Guid.NewGuid().ToString("N");
             Check.Length(userId, nameof(userId), UserPreferenceConsts.UserIdMaxLength, 0);

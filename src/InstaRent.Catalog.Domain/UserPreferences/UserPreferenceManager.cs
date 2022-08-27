@@ -18,7 +18,7 @@ namespace InstaRent.Catalog.UserPreferences
         }
 
         public async Task<UserPreference> CreateAsync(
-        string userId, List<ITag> tags)
+        string userId, List<Tag> tags)
         {
             var userPreference = new UserPreference(
                 GuidGenerator.Create(), userId, tags
@@ -29,7 +29,7 @@ namespace InstaRent.Catalog.UserPreferences
 
         public async Task<UserPreference> UpdateAsync(
             Guid id,
-            string userId, List<ITag> tags, [CanBeNull] string concurrencyStamp = null
+            string userId, List<Tag> tags, [CanBeNull] string concurrencyStamp = null
         )
         {
             var queryable = await _userPreferenceRepository.GetQueryableAsync();

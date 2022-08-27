@@ -23,7 +23,7 @@ namespace InstaRent.Catalog.DailyClicks
         }
 
         [HttpGet]
-        public Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetListAsync(GetDailyClicksInput input)
+        public Task<PagedResultDto<DailyClickDto>> GetListAsync(GetDailyClicksInput input)
         {
             return _dailyClicksAppService.GetListAsync(input);
         }

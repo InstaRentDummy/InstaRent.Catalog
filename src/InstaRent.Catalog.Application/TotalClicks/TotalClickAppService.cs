@@ -24,15 +24,15 @@ namespace InstaRent.Catalog.TotalClicks
             _totalClickManager = totalClickManager; _bagRepository = bagRepository;
         }
 
-        public virtual async Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetListAsync(GetTotalClicksInput input)
+        public virtual async Task<PagedResultDto<TotalClickDto>> GetListAsync(GetTotalClicksInput input)
         {
             var totalCount = await _totalClickRepository.GetCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.BagId);
-            var items = await _totalClickRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.clicksMin, input.clicksMax, input.BagId, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var items = await _totalClickRepository.GetListAsync(input.FilterText, input.clicksMin, input.clicksMax, input.BagId, input.Sorting, input.MaxResultCount, input.SkipCount);
 
-            return new PagedResultDto<TotalClickWithNavigationPropertiesDto>
+            return new PagedResultDto<TotalClickDto>
             {
                 TotalCount = totalCount,
-                Items = ObjectMapper.Map<List<TotalClickWithNavigationProperties>, List<TotalClickWithNavigationPropertiesDto>>(items)
+                Items = ObjectMapper.Map<List<TotalClick>, List<TotalClickDto>>(items)
             };
         }
 

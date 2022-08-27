@@ -20,33 +20,14 @@ namespace InstaRent.Catalog
             _userPreferenceRepository = userPreferenceRepository;
         }
 
-        public virtual async Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(string period)
+        public virtual async Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(GetDailyClicksInput input)
         {
-            GetDailyClicksInput input = new GetDailyClicksInput();
-            switch (period)
-            {
-                case "daily":
-                    {
-                        input.lastModificationTimeMin = DateTime.Now.Date;
-                        input.lastModificationTimeMax = DateTime.Now;
-                        break;
-                    }
-                case "weekly":
-                    {
-                        input.lastModificationTimeMin = DateTime.Now.AddDays(-7);
-                        input.lastModificationTimeMax = DateTime.Now;
-                        break;
-                    }
-                default:
-                    {
-                        input.lastModificationTimeMin = DateTime.Now.AddDays(-30);
-                        input.lastModificationTimeMax = DateTime.Now;
-                        break;
-                    }
-            }
+            var sortstr = " LastModificationTime DESC, clicks DESC";
+            if (!string.IsNullOrEmpty(input.Sorting))
+                sortstr = " LastModificationTime DESC, clicks DESC" + " ," + input.Sorting;
 
             var totalCount = await _dailyClickRepository.GetCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId);
-            var items = await _dailyClickRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var items = await _dailyClickRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId, sortstr, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<DailyClickWithNavigationPropertiesDto>
             {

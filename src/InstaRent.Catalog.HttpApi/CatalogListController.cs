@@ -24,10 +24,10 @@ namespace InstaRent.Catalog
         }
 
         [HttpGet]
-        [Route("trending/{period}")]
-        public Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(string period)
+        [Route("trending")]
+        public Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(GetDailyClicksInput input)
         {
-            return _catalogListAppService.GetTrendingListAsync(period);
+            return _catalogListAppService.GetTrendingListAsync(input);
         }
 
         //GetRecommendationList

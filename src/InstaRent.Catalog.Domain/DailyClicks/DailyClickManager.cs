@@ -23,7 +23,7 @@ namespace InstaRent.Catalog.DailyClicks
         {
             var dailyClick = new DailyClick(
              GuidGenerator.Create(),
-             bagId, clicks
+             bagId, clicks, DateTime.Now
              );
 
             return await _dailyClickRepository.InsertAsync(dailyClick);
@@ -41,6 +41,7 @@ namespace InstaRent.Catalog.DailyClicks
 
             dailyClick.BagId = bagId;
             dailyClick.clicks = clicks;
+            dailyClick.LastModificationTime = DateTime.Now;
 
             dailyClick.SetConcurrencyStampIfNotNull(concurrencyStamp);
             return await _dailyClickRepository.UpdateAsync(dailyClick);

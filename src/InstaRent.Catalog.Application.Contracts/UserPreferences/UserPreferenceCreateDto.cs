@@ -9,6 +9,6 @@ namespace InstaRent.Catalog.UserPreferences
         [StringLength(UserPreferenceConsts.UserIdMaxLength)]
         public string UserId { get; set; }
 
-        public List<ITag> Tags { get; set; }
+        public List<TagDto> Tags { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace InstaRent.Catalog.TotalClicks
         }
 
         [HttpGet]
-        public Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetListAsync(GetTotalClicksInput input)
+        public Task<PagedResultDto<TotalClickDto>> GetListAsync(GetTotalClicksInput input)
         {
             return _totalClicksAppService.GetListAsync(input);
         }

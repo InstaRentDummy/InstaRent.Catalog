@@ -29,5 +29,6 @@ public class CatalogApplicationAutoMapperProfile : Profile
 
         CreateMap<UserPreference, UserPreferenceDto>();
         CreateMap<Tag,TagDto>();
+        CreateMap<TagDto, Tag>();
     }
 }

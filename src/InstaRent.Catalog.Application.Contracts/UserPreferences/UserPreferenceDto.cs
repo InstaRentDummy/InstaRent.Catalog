@@ -9,7 +9,7 @@ namespace InstaRent.Catalog.UserPreferences
     public class UserPreferenceDto : AuditedEntityDto<Guid>, IHasConcurrencyStamp
     {
         public string UserId { get; set; }
-        public List<ITag> Tags { get; set; }
+        public List<TagDto> Tags { get; set; }
 
         public string ConcurrencyStamp { get; set; }
     }

@@ -1,3 +1,4 @@
+using AutoMapper.Internal.Mappers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace InstaRent.Catalog.UserPreferences
         {
 
             var userPreference = await _userPreferenceManager.CreateAsync(
-            input.UserId, input.Tags
+            input.UserId, ObjectMapper.Map<List<TagDto>, List<Tag>>(input.Tags)
             );
 
             return ObjectMapper.Map<UserPreference, UserPreferenceDto>(userPreference);
@@ -58,10 +59,11 @@ namespace InstaRent.Catalog.UserPreferences
 
         public virtual async Task<UserPreferenceDto> UpdateAsync(Guid id, UserPreferenceUpdateDto input)
         {
+             
 
-            var userPreference = await _userPreferenceManager.UpdateAsync(
+           var userPreference = await _userPreferenceManager.UpdateAsync(
             id,
-            input.UserId, input.Tags, input.ConcurrencyStamp
+            input.UserId, ObjectMapper.Map<List<TagDto>, List<Tag>>(input.Tags), input.ConcurrencyStamp
             );
 
             return ObjectMapper.Map<UserPreference, UserPreferenceDto>(userPreference);

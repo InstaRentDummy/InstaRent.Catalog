@@ -63,6 +63,7 @@ namespace InstaRent.Catalog.TotalClicks
             string filterText = null,
             long? clicksMin = null,
             long? clicksMax = null,
+            Guid? bagId = null,
             string sorting = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,

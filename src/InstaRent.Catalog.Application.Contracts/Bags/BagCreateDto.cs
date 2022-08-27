@@ -11,10 +11,10 @@ namespace InstaRent.Catalog.Bags
         public string bag_name { get; set; }
         [Required]
         public string description { get; set; }
-        public string[] image_urls { get; set; }
+        public List<string> image_urls { get; set; }
         public DateTime rental_start_date { get; set; }
         public DateTime rental_end_date { get; set; }
-        public string[] tags { get; set; }
+        public List<string> tags { get; set; }
         [StringLength(BagConsts.statusMaxLength)]
         public string status { get; set; }
         [Required]

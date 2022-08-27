@@ -24,15 +24,15 @@ namespace InstaRent.Catalog.DailyClicks
             _dailyClickManager = dailyClickManager; _bagRepository = bagRepository;
         }
 
-        public virtual async Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetListAsync(GetDailyClicksInput input)
+        public virtual async Task<PagedResultDto<DailyClickDto>> GetListAsync(GetDailyClicksInput input)
         {
             var totalCount = await _dailyClickRepository.GetCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax,  input.BagId);
-            var items = await _dailyClickRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var items = await _dailyClickRepository.GetListAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax,input.Sorting, input.MaxResultCount, input.SkipCount);
 
-            return new PagedResultDto<DailyClickWithNavigationPropertiesDto>
+            return new PagedResultDto<DailyClickDto>
             {
                 TotalCount = totalCount,
-                Items = ObjectMapper.Map<List<DailyClickWithNavigationProperties>, List<DailyClickWithNavigationPropertiesDto>>(items)
+                Items = ObjectMapper.Map<List<DailyClick>, List<DailyClickDto>>(items)
             };
         }
 

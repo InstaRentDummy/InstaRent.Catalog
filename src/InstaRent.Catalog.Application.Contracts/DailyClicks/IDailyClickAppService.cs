@@ -8,7 +8,7 @@ namespace InstaRent.Catalog.DailyClicks
 {
     public interface IDailyClicksAppService : IApplicationService
     {
-        Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetListAsync(GetDailyClicksInput input);
+        Task<PagedResultDto<DailyClickDto>> GetListAsync(GetDailyClicksInput input);
 
         Task<DailyClickWithNavigationPropertiesDto> GetWithNavigationPropertiesAsync(Guid id);
 

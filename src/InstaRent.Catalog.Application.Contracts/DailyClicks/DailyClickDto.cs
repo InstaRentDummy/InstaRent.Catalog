@@ -5,13 +5,15 @@ using Volo.Abp.Domain.Entities;
 
 namespace InstaRent.Catalog.DailyClicks
 {
-    public class DailyClickDto : AuditedEntityDto<Guid>, IHasConcurrencyStamp
+    public class DailyClickDto : EntityDto<Guid>, IHasConcurrencyStamp
     {
         public long clicks { get; set; }
 
         [JsonPropertyName("bag_id")]
         public Guid? BagId { get; set; }
-
+        [JsonIgnore]
+        public DateTime? LastModificationTime { get; set; }
+        [JsonIgnore]
         public string ConcurrencyStamp { get; set; }
     }
 }
