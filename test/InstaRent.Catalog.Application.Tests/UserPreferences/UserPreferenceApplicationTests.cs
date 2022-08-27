@@ -10,12 +10,12 @@ namespace InstaRent.Catalog.UserPreferences
     public class UserPreferencesAppServiceTests : CatalogApplicationTestBase
     {
         private readonly IUserPreferencesAppService _userPreferencesAppService;
-        private readonly IRepository<UserPreference, long> _userPreferenceRepository;
+        private readonly IRepository<UserPreference, Guid> _userPreferenceRepository;
 
         public UserPreferencesAppServiceTests()
         {
             _userPreferencesAppService = GetRequiredService<IUserPreferencesAppService>();
-            _userPreferenceRepository = GetRequiredService<IRepository<UserPreference, long>>();
+            _userPreferenceRepository = GetRequiredService<IRepository<UserPreference, Guid>>();
         }
 
         [Fact]
@@ -27,19 +27,19 @@ namespace InstaRent.Catalog.UserPreferences
             // Assert
             result.TotalCount.ShouldBe(2);
             result.Items.Count.ShouldBe(2);
-            result.Items.Any(x => x.Id == 1).ShouldBe(true);
-            result.Items.Any(x => x.Id == 2).ShouldBe(true);
+            result.Items.Any(x => x.Id == Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8")).ShouldBe(true);
+            result.Items.Any(x => x.Id == Guid.Parse("753aee59-d0a4-44f4-bbcc-8e10f452e347")).ShouldBe(true);
         }
 
         [Fact]
         public async Task GetAsync()
         {
             // Act
-            var result = await _userPreferencesAppService.GetAsync(1);
+            var result = await _userPreferencesAppService.GetAsync(Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8"));
 
             // Assert
             result.ShouldNotBeNull();
-            result.Id.ShouldBe(1);
+            result.Id.ShouldBe(Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8"));
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace InstaRent.Catalog.UserPreferences
             };
 
             // Act
-            var serviceResult = await _userPreferencesAppService.UpdateAsync(1, input);
+            var serviceResult = await _userPreferencesAppService.UpdateAsync(Guid.Parse("753aee59-d0a4-44f4-bbcc-8e10f452e347"), input);
 
             // Assert
             var result = await _userPreferenceRepository.FindAsync(c => c.Id == serviceResult.Id);
@@ -88,10 +88,10 @@ namespace InstaRent.Catalog.UserPreferences
         public async Task DeleteAsync()
         {
             // Act
-            await _userPreferencesAppService.DeleteAsync(1);
+            await _userPreferencesAppService.DeleteAsync(Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8"));
 
             // Assert
-            var result = await _userPreferenceRepository.FindAsync(c => c.Id == 1);
+            var result = await _userPreferenceRepository.FindAsync(c => c.Id == Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8"));
 
             result.ShouldBeNull();
         }

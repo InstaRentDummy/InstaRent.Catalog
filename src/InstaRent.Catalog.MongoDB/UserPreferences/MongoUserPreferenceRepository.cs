@@ -32,7 +32,7 @@ namespace InstaRent.Catalog.UserPreferences
                 .PageBy<UserPreference, IMongoQueryable<UserPreference>>(skipCount, maxResultCount)
                 .ToListAsync(GetCancellationToken(cancellationToken));
 
-            var tags = userPreferences.First().Tags.OrderBy(x => x).ToList();
+            var tags = userPreferences.First().Tags.OrderBy(x => x.weightage).Select(y => y.tagname).ToList();
 
             var dbContext = await GetDbContextAsync(cancellationToken);
             //return tags.Select(s => new UserPreferenceWithNavigationProperties
@@ -43,7 +43,7 @@ namespace InstaRent.Catalog.UserPreferences
             List<Bag> result = new();
             tags.ForEach(s =>
             {
-                var bags = dbContext.Bags.AsQueryable().Where(e => e.tags == s).ToList();
+                var bags = dbContext.Bags.AsQueryable().Where(e => e.tags.Contains(s)).ToList();
 
                 bags.ForEach(x =>
                 {
