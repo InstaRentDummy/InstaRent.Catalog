@@ -23,21 +23,21 @@ namespace InstaRent.Catalog.DailyClicks
         }
 
         [HttpGet]
-        public Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetListAsync(GetDailyClicksInput input)
+        public Task<PagedResultDto<DailyClickDto>> GetListAsync(GetDailyClicksInput input)
         {
             return _dailyClicksAppService.GetListAsync(input);
         }
 
         [HttpGet]
         [Route("with-navigation-properties/{id}")]
-        public Task<DailyClickWithNavigationPropertiesDto> GetWithNavigationPropertiesAsync(long id)
+        public Task<DailyClickWithNavigationPropertiesDto> GetWithNavigationPropertiesAsync(Guid id)
         {
             return _dailyClicksAppService.GetWithNavigationPropertiesAsync(id);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public virtual Task<DailyClickDto> GetAsync(long id)
+        public virtual Task<DailyClickDto> GetAsync(Guid id)
         {
             return _dailyClicksAppService.GetAsync(id);
         }
@@ -57,14 +57,14 @@ namespace InstaRent.Catalog.DailyClicks
 
         [HttpPut]
         [Route("{id}")]
-        public virtual Task<DailyClickDto> UpdateAsync(long id, DailyClickUpdateDto input)
+        public virtual Task<DailyClickDto> UpdateAsync(Guid id, DailyClickUpdateDto input)
         {
             return _dailyClicksAppService.UpdateAsync(id, input);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public virtual Task DeleteAsync(long id)
+        public virtual Task DeleteAsync(Guid id)
         {
             return _dailyClicksAppService.DeleteAsync(id);
         }

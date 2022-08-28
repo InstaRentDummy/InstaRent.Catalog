@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Volo.Abp.Domain.Entities;
 
@@ -8,7 +9,7 @@ namespace InstaRent.Catalog.UserPreferences
         [EmailAddress]
         [StringLength(UserPreferenceConsts.UserIdMaxLength)]
         public string UserId { get; set; }
-        public string[] Tags { get; set; }
+        public List<TagDto> Tags { get; set; }
 
         public string ConcurrencyStamp { get; set; }
     }

@@ -23,7 +23,7 @@ namespace InstaRent.Catalog.TotalClicks
         {
             var totalClick = new TotalClick(
              GuidGenerator.Create(),
-             bagId, clicks
+             bagId, clicks, DateTime.Now 
              );
 
             return await _totalClickRepository.InsertAsync(totalClick);
@@ -41,6 +41,7 @@ namespace InstaRent.Catalog.TotalClicks
 
             totalClick.BagId = bagId;
             totalClick.clicks = clicks;
+            totalClick.LastModificationTime = DateTime.Now;
 
             totalClick.SetConcurrencyStampIfNotNull(concurrencyStamp);
             return await _totalClickRepository.UpdateAsync(totalClick);

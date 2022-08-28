@@ -10,12 +10,12 @@ namespace InstaRent.Catalog.DailyClicks
     public class DailyClicksAppServiceTests : CatalogApplicationTestBase
     {
         private readonly IDailyClicksAppService _dailyClicksAppService;
-        private readonly IRepository<DailyClick, long> _dailyClickRepository;
+        private readonly IRepository<DailyClick, Guid> _dailyClickRepository;
 
         public DailyClicksAppServiceTests()
         {
             _dailyClicksAppService = GetRequiredService<IDailyClicksAppService>();
-            _dailyClickRepository = GetRequiredService<IRepository<DailyClick, long>>();
+            _dailyClickRepository = GetRequiredService<IRepository<DailyClick, Guid>>();
         }
 
         [Fact]
@@ -27,19 +27,19 @@ namespace InstaRent.Catalog.DailyClicks
             // Assert
             result.TotalCount.ShouldBe(2);
             result.Items.Count.ShouldBe(2);
-            result.Items.Any(x => x.DailyClick.Id == 1).ShouldBe(true);
-            result.Items.Any(x => x.DailyClick.Id == 2).ShouldBe(true);
+            result.Items.Any(x => x.Id == Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8")).ShouldBe(true);
+            result.Items.Any(x => x.Id == Guid.Parse("753aee59-d0a4-44f4-bbcc-8e10f452e347")).ShouldBe(true);
         }
 
         [Fact]
         public async Task GetAsync()
         {
             // Act
-            var result = await _dailyClicksAppService.GetAsync(1);
+            var result = await _dailyClicksAppService.GetAsync(Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8"));
 
             // Assert
             result.ShouldNotBeNull();
-            result.Id.ShouldBe(1);
+            result.Id.ShouldBe(Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8"));
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace InstaRent.Catalog.DailyClicks
             };
 
             // Act
-            var serviceResult = await _dailyClicksAppService.UpdateAsync(1, input);
+            var serviceResult = await _dailyClicksAppService.UpdateAsync(Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8"), input);
 
             // Assert
             var result = await _dailyClickRepository.FindAsync(c => c.Id == serviceResult.Id);
@@ -84,10 +84,10 @@ namespace InstaRent.Catalog.DailyClicks
         public async Task DeleteAsync()
         {
             // Act
-            await _dailyClicksAppService.DeleteAsync(1);
+            await _dailyClicksAppService.DeleteAsync(Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8"));
 
             // Assert
-            var result = await _dailyClickRepository.FindAsync(c => c.Id == 1);
+            var result = await _dailyClickRepository.FindAsync(c => c.Id == Guid.Parse("12069481-5215-46cc-b5a8-05e03014b6d8"));
 
             result.ShouldBeNull();
         }

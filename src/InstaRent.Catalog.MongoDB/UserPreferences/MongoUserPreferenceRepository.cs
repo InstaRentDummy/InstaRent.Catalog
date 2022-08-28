@@ -32,7 +32,7 @@ namespace InstaRent.Catalog.UserPreferences
                 .PageBy<UserPreference, IMongoQueryable<UserPreference>>(skipCount, maxResultCount)
                 .ToListAsync(GetCancellationToken(cancellationToken));
 
-            var tags = userPreferences.First().Tags.OrderBy(x => x).ToList();
+            var tags = userPreferences.First().Tags.OrderBy(x => x.weightage).Select(y => y.tagname).ToList();
 
             var dbContext = await GetDbContextAsync(cancellationToken);
             //return tags.Select(s => new UserPreferenceWithNavigationProperties
@@ -43,7 +43,7 @@ namespace InstaRent.Catalog.UserPreferences
             List<Bag> result = new();
             tags.ForEach(s =>
             {
-                var bags = dbContext.Bags.AsQueryable().Where(e => e.tags == s).ToList();
+                var bags = dbContext.Bags.AsQueryable().Where(e => e.tags.Contains(s)).ToList();
 
                 bags.ForEach(x =>
                 {
@@ -88,9 +88,9 @@ namespace InstaRent.Catalog.UserPreferences
             string tags = null)
         {
             return query
-                .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.UserId.Contains(filterText) || e.Tags.Contains(filterText))
+                .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.UserId.Contains(filterText) ||  e.Tags.Any(t => t.tagname.Contains(filterText)))
                     .WhereIf(!string.IsNullOrWhiteSpace(userId), e => e.UserId.Contains(userId))
-                    .WhereIf(!string.IsNullOrWhiteSpace(tags), e => e.Tags.Contains(tags));
+                    .WhereIf(!string.IsNullOrWhiteSpace(tags), e => e.Tags.Any(t => t.tagname.Contains(tags)));
         }
 
 

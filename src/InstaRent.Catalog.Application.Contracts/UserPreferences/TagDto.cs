@@ -1,8 +1,19 @@
 ﻿namespace InstaRent.Catalog.UserPreferences
 {
-    public class TagDto
+    public class TagDto : ITag
     {
-        public string Name { get; set; }
-        public int Weightage { get; set; }
+        public string tagname { get; set; }
+        public int weightage { get; set; }
+
+        public TagDto()
+        {
+
+        }
+
+        public TagDto(string tagname, int weightage)
+        {
+            this.tagname = tagname;
+            this.weightage = weightage;
+        }
     }
 }

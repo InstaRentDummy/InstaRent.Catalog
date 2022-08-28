@@ -77,15 +77,15 @@ namespace InstaRent.Catalog.Bags
             string renter_id = null)
         {
             return query
-                .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.bag_name.Contains(filterText) || e.description.Contains(filterText) || e.image_urls.Contains(filterText) || e.tags.Contains(filterText) || e.status.Contains(filterText) || e.renter_id.Contains(filterText))
+                .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.bag_name.Contains(filterText) || e.description.Contains(filterText) || e.image_urls.Any(i => i.Contains(filterText)) || e.tags.Any(t => t.Contains(filterText))   || e.status.Contains(filterText) || e.renter_id.Contains(filterText))
                     .WhereIf(!string.IsNullOrWhiteSpace(bag_name), e => e.bag_name.Contains(bag_name))
                     .WhereIf(!string.IsNullOrWhiteSpace(description), e => e.description.Contains(description))
-                    .WhereIf(!string.IsNullOrWhiteSpace(image_urls), e => e.image_urls.Contains(image_urls))
+                    .WhereIf(!string.IsNullOrWhiteSpace(image_urls), e => e.image_urls.Any(i => i.Contains(image_urls)))
                     .WhereIf(rental_start_dateMin.HasValue, e => e.rental_start_date >= rental_start_dateMin.Value)
                     .WhereIf(rental_start_dateMax.HasValue, e => e.rental_start_date <= rental_start_dateMax.Value)
                     .WhereIf(rental_end_dateMin.HasValue, e => e.rental_end_date >= rental_end_dateMin.Value)
                     .WhereIf(rental_end_dateMax.HasValue, e => e.rental_end_date <= rental_end_dateMax.Value)
-                    .WhereIf(!string.IsNullOrWhiteSpace(tags), e => e.tags.Contains(tags))
+                    .WhereIf(!string.IsNullOrWhiteSpace(tags), e => e.tags.Any(t => t.Contains(tags)))
                     .WhereIf(!string.IsNullOrWhiteSpace(status), e => e.status.Contains(status))
                     .WhereIf(!string.IsNullOrWhiteSpace(renter_id), e => e.renter_id.Contains(renter_id));
         }

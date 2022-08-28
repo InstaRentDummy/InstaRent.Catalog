@@ -22,15 +22,15 @@ namespace InstaRent.Catalog.DailyClicks
         Guid? bagId, long clicks)
         {
             var dailyClick = new DailyClick(
-
-             bagId, clicks
+             GuidGenerator.Create(),
+             bagId, clicks, DateTime.Now
              );
 
             return await _dailyClickRepository.InsertAsync(dailyClick);
         }
 
         public async Task<DailyClick> UpdateAsync(
-            long id,
+            Guid id,
             Guid? bagId, long clicks, [CanBeNull] string concurrencyStamp = null
         )
         {
@@ -41,6 +41,7 @@ namespace InstaRent.Catalog.DailyClicks
 
             dailyClick.BagId = bagId;
             dailyClick.clicks = clicks;
+            dailyClick.LastModificationTime = DateTime.Now;
 
             dailyClick.SetConcurrencyStampIfNotNull(concurrencyStamp);
             return await _dailyClickRepository.UpdateAsync(dailyClick);

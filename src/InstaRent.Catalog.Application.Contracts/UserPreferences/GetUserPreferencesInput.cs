@@ -1,4 +1,6 @@
 using Volo.Abp.Application.Dtos;
+using System;
+using System.Collections.Generic;
 
 namespace InstaRent.Catalog.UserPreferences
 {
@@ -6,7 +8,7 @@ namespace InstaRent.Catalog.UserPreferences
     {
         public string FilterText { get; set; }
         public string UserId { get; set; }
-        public string Tags { get; set; }
+        public List<TagDto> Tags { get; set; }
 
         public GetUserPreferencesInput()
         {

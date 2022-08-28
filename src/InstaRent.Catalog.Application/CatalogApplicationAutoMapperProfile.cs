@@ -28,5 +28,7 @@ public class CatalogApplicationAutoMapperProfile : Profile
         CreateMap<Bag, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.bag_name));
 
         CreateMap<UserPreference, UserPreferenceDto>();
+        CreateMap<Tag,TagDto>();
+        CreateMap<TagDto, Tag>();
     }
 }

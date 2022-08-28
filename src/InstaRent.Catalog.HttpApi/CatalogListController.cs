@@ -1,5 +1,6 @@
 ﻿using InstaRent.Catalog.Bags;
 using InstaRent.Catalog.DailyClicks;
+using InstaRent.Catalog.TotalClicks;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Volo.Abp;
@@ -24,10 +25,17 @@ namespace InstaRent.Catalog
         }
 
         [HttpGet]
-        [Route("trending/{period}")]
-        public Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(string period)
+        [Route("trending")]
+        public Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(GetDailyClicksInput input)
         {
-            return _catalogListAppService.GetTrendingListAsync(period);
+            return _catalogListAppService.GetTrendingListAsync(input);
+        }
+
+        [HttpGet]
+        [Route("most-visited")]
+        public Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetMostVisitedListAsync(GetTotalClicksInput input)
+        {
+            return _catalogListAppService.GetMostVisitedListAsync(input);
         }
 
         //GetRecommendationList

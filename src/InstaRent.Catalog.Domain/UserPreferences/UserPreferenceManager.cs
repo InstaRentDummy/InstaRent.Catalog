@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Data;
@@ -17,7 +18,7 @@ namespace InstaRent.Catalog.UserPreferences
         }
 
         public async Task<UserPreference> CreateAsync(
-        string userId, string[] tags)
+        string userId, List<Tag> tags)
         {
             var userPreference = new UserPreference(
                 GuidGenerator.Create(), userId, tags
@@ -28,7 +29,7 @@ namespace InstaRent.Catalog.UserPreferences
 
         public async Task<UserPreference> UpdateAsync(
             Guid id,
-            string userId, string[] tags, [CanBeNull] string concurrencyStamp = null
+            string userId, List<Tag> tags, [CanBeNull] string concurrencyStamp = null
         )
         {
             var queryable = await _userPreferenceRepository.GetQueryableAsync();

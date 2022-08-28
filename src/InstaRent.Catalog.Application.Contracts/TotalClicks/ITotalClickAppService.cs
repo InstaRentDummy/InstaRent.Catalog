@@ -8,7 +8,7 @@ namespace InstaRent.Catalog.TotalClicks
 {
     public interface ITotalClicksAppService : IApplicationService
     {
-        Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetListAsync(GetTotalClicksInput input);
+        Task<PagedResultDto<TotalClickDto>> GetListAsync(GetTotalClicksInput input);
 
         Task<TotalClickWithNavigationPropertiesDto> GetWithNavigationPropertiesAsync(Guid id);
 

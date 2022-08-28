@@ -6,10 +6,10 @@ using Volo.Abp.Domain.Repositories;
 
 namespace InstaRent.Catalog.DailyClicks
 {
-    public interface IDailyClickRepository : IRepository<DailyClick, long>
+    public interface IDailyClickRepository : IRepository<DailyClick, Guid>
     {
         Task<DailyClickWithNavigationProperties> GetWithNavigationPropertiesAsync(
-    long id,
+    Guid id,
     CancellationToken cancellationToken = default
 );
 
