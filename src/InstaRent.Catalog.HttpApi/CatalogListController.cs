@@ -32,10 +32,10 @@ namespace InstaRent.Catalog
         }
 
         [HttpGet]
-        [Route("most-visted")]
-        public Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetMostVistedListAsync(GetTotalClicksInput input)
+        [Route("most-visited")]
+        public Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetMostVisitedListAsync(GetTotalClicksInput input)
         {
-            return _catalogListAppService.GetMostVistedListAsync(input);
+            return _catalogListAppService.GetMostVisitedListAsync(input);
         }
 
         //GetRecommendationList

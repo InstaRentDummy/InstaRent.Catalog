@@ -12,7 +12,7 @@ namespace InstaRent.Catalog
 
         Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(GetDailyClicksInput input);
 
-        Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetMostVistedListAsync(GetTotalClicksInput input);
+        Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetMostVisitedListAsync(GetTotalClicksInput input);
 
         Task<PagedResultDto<BagDto>> GetRecommendationsAsync(string userId);
     }

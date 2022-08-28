@@ -39,7 +39,7 @@ namespace InstaRent.Catalog
             };
         }
 
-        public virtual async Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetMostVistedListAsync(GetTotalClicksInput input)
+        public virtual async Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetMostVisitedListAsync(GetTotalClicksInput input)
         {
             var sortstr = " LastModificationTime DESC, clicks DESC";
             if (!string.IsNullOrEmpty(input.Sorting))
