@@ -26,8 +26,8 @@ namespace InstaRent.Catalog.TotalClicks
 
         public virtual async Task<PagedResultDto<TotalClickDto>> GetListAsync(GetTotalClicksInput input)
         {
-            var totalCount = await _totalClickRepository.GetCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.BagId);
-            var items = await _totalClickRepository.GetListAsync(input.FilterText, input.clicksMin, input.clicksMax, input.BagId, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var totalCount = await _totalClickRepository.GetCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId);
+            var items = await _totalClickRepository.GetListAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId, input.Sorting, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<TotalClickDto>
             {

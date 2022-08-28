@@ -1,5 +1,6 @@
 ﻿using InstaRent.Catalog.Bags;
 using InstaRent.Catalog.DailyClicks;
+using InstaRent.Catalog.TotalClicks;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Volo.Abp;
@@ -28,6 +29,13 @@ namespace InstaRent.Catalog
         public Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(GetDailyClicksInput input)
         {
             return _catalogListAppService.GetTrendingListAsync(input);
+        }
+
+        [HttpGet]
+        [Route("most-visted")]
+        public Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetMostVistedListAsync(GetTotalClicksInput input)
+        {
+            return _catalogListAppService.GetMostVistedListAsync(input);
         }
 
         //GetRecommendationList

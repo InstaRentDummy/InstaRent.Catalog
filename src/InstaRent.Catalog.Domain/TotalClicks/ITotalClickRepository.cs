@@ -17,6 +17,8 @@ namespace InstaRent.Catalog.TotalClicks
             string filterText = null,
             long? clicksMin = null,
             long? clicksMax = null,
+            DateTime? lastModificationTimeMin = null,
+            DateTime? lastModificationTimeMax = null,
             Guid? bagId = null,
             string sorting = null,
             int maxResultCount = int.MaxValue,
@@ -28,6 +30,8 @@ namespace InstaRent.Catalog.TotalClicks
                     string filterText = null,
                     long? clicksMin = null,
                     long? clicksMax = null,
+                    DateTime? lastModificationTimeMin = null,
+                    DateTime? lastModificationTimeMax = null,
                     Guid? bagId = null,
                     string sorting = null,
                     int maxResultCount = int.MaxValue,
@@ -39,6 +43,8 @@ namespace InstaRent.Catalog.TotalClicks
             string filterText = null,
             long? clicksMin = null,
             long? clicksMax = null,
+            DateTime? lastModificationTimeMin = null,
+            DateTime? lastModificationTimeMax = null,
             Guid? bagId = null,
             CancellationToken cancellationToken = default);
     }

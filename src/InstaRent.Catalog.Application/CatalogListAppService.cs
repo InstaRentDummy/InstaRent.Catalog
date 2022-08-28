@@ -1,5 +1,6 @@
 ﻿using InstaRent.Catalog.Bags;
 using InstaRent.Catalog.DailyClicks;
+using InstaRent.Catalog.TotalClicks;
 using InstaRent.Catalog.UserPreferences;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,14 @@ namespace InstaRent.Catalog
     public class CatalogListAppService : ApplicationService, ICatalogListAppService
     {
         private readonly IUserPreferenceRepository _userPreferenceRepository;
+        private readonly ITotalClickRepository _totalClickRepository;
         private readonly IDailyClickRepository _dailyClickRepository;
 
-        public CatalogListAppService(IDailyClickRepository dailyClickRepository, IUserPreferenceRepository userPreferenceRepository)
+        public CatalogListAppService(IDailyClickRepository dailyClickRepository, IUserPreferenceRepository userPreferenceRepository, ITotalClickRepository totalClickRepository)
         {
             _dailyClickRepository = dailyClickRepository;
             _userPreferenceRepository = userPreferenceRepository;
+            _totalClickRepository = totalClickRepository;
         }
 
         public virtual async Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(GetDailyClicksInput input)
@@ -36,6 +39,21 @@ namespace InstaRent.Catalog
             };
         }
 
+        public virtual async Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetMostVistedListAsync(GetTotalClicksInput input)
+        {
+            var sortstr = " LastModificationTime DESC, clicks DESC";
+            if (!string.IsNullOrEmpty(input.Sorting))
+                sortstr = " LastModificationTime DESC, clicks DESC" + " ," + input.Sorting;
+
+            var totalCount = await _totalClickRepository.GetCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId);
+            var items = await _totalClickRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId, sortstr, input.MaxResultCount, input.SkipCount);
+
+            return new PagedResultDto<TotalClickWithNavigationPropertiesDto>
+            {
+                TotalCount = totalCount,
+                Items = ObjectMapper.Map<List<TotalClickWithNavigationProperties>, List<TotalClickWithNavigationPropertiesDto>>(items)
+            };
+        }
 
         public virtual async Task<PagedResultDto<BagDto>> GetRecommendationsAsync(string userId)
         {
