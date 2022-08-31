@@ -21,5 +21,7 @@ namespace InstaRent.Catalog.DailyClicks
         Task<DailyClickDto> CreateAsync(DailyClickCreateDto input);
 
         Task<DailyClickDto> UpdateAsync(Guid id, DailyClickUpdateDto input);
+
+        Task<DailyClickDto> IncreaseAsync(Guid bag_id);
     }
 }

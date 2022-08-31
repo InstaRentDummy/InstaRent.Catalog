@@ -7,7 +7,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace InstaRent.Catalog.Bags
 {
-    public class Bag : AuditedEntity<Guid>, IHasConcurrencyStamp
+    public class Bag : Entity<Guid>, IHasConcurrencyStamp
     {
         [NotNull]
         public virtual string bag_name { get; set; }
@@ -31,6 +31,12 @@ namespace InstaRent.Catalog.Bags
         [NotNull]
         public virtual string renter_id { get; set; }
 
+        [CanBeNull]
+        public virtual DateTime? LastModificationTime { get; set; }
+
+        [NotNull]
+        public virtual bool isdeleted { get; set; }
+
         public string ConcurrencyStamp { get; set; }
 
         public Bag()
@@ -38,7 +44,7 @@ namespace InstaRent.Catalog.Bags
 
         }
 
-        public Bag(Guid id, string bag_name, string description, List<string> image_urls, DateTime rental_start_date, DateTime rental_end_date, List<string> tags, string status, string renter_id)
+        public Bag(Guid id, string bag_name, string description, List<string> image_urls, DateTime rental_start_date, DateTime rental_end_date, List<string> tags, string status, string renter_id, bool isdeleted=false)
         {
             ConcurrencyStamp = Guid.NewGuid().ToString("N");
             Id = id;
@@ -55,6 +61,8 @@ namespace InstaRent.Catalog.Bags
             this.tags = tags;
             this.status = status;
             this.renter_id = renter_id;
+            this.isdeleted = isdeleted;
+            this.LastModificationTime = DateTime.Now;
         }
     }
 }

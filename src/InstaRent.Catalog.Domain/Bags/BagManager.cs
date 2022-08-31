@@ -24,7 +24,7 @@ namespace InstaRent.Catalog.Bags
         {
             var bag = new Bag(
              GuidGenerator.Create(),
-             bag_name, description, image_urls, rental_start_date, rental_end_date, tags, status, renter_id
+             bag_name, description, image_urls, rental_start_date, rental_end_date, tags, status, renter_id,false
              );
 
             return await _bagRepository.InsertAsync(bag);
@@ -48,9 +48,24 @@ namespace InstaRent.Catalog.Bags
             bag.tags = tags;
             bag.status = status;
             bag.renter_id = renter_id;
+            bag.LastModificationTime = DateTime.Now;
 
             bag.SetConcurrencyStampIfNotNull(concurrencyStamp);
             return await _bagRepository.UpdateAsync(bag);
+        }
+
+        public async Task DeleteAsync(Guid id, [CanBeNull] string concurrencyStamp = null)
+        {
+            var queryable = await _bagRepository.GetQueryableAsync();
+            var query = queryable.Where(x => x.Id == id);
+
+            var bag = await AsyncExecuter.FirstOrDefaultAsync(query);
+
+            bag.isdeleted = true;
+            bag.LastModificationTime = DateTime.Now;
+
+            bag.SetConcurrencyStampIfNotNull(concurrencyStamp);
+            await _bagRepository.UpdateAsync(bag);
         }
     }
 }

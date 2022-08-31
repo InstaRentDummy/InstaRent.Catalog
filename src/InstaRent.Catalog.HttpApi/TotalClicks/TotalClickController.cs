@@ -6,6 +6,7 @@ using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Application.Dtos;
 using InstaRent.Catalog.TotalClicks;
+using InstaRent.Catalog.DailyClicks;
 
 namespace InstaRent.Catalog.TotalClicks
 {
@@ -67,6 +68,13 @@ namespace InstaRent.Catalog.TotalClicks
         public virtual Task DeleteAsync(Guid id)
         {
             return _totalClicksAppService.DeleteAsync(id);
+        }
+
+        [HttpPost]
+        [Route("increasecount/{bag_id}")]
+        public virtual Task<TotalClickDto> IncreaseAsync(Guid bag_id)
+        {
+            return _totalClicksAppService.IncreaseAsync(bag_id);
         }
     }
 }

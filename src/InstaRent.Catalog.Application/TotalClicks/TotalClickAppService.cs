@@ -1,4 +1,5 @@
 using InstaRent.Catalog.Bags;
+using InstaRent.Catalog.DailyClicks;
 using InstaRent.Catalog.Shared;
 using System;
 using System.Collections.Generic;
@@ -87,6 +88,12 @@ namespace InstaRent.Catalog.TotalClicks
             );
 
             return ObjectMapper.Map<TotalClick, TotalClickDto>(totalClick);
+        }
+
+        public virtual async Task<TotalClickDto> IncreaseAsync(Guid bag_id)
+        {
+            var dailyClick = await _totalClickManager.IncreaseAsync(bag_id);
+            return ObjectMapper.Map<TotalClick, TotalClickDto>(dailyClick);
         }
     }
 }

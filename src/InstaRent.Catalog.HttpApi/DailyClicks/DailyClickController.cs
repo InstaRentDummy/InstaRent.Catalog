@@ -68,5 +68,12 @@ namespace InstaRent.Catalog.DailyClicks
         {
             return _dailyClicksAppService.DeleteAsync(id);
         }
+
+        [HttpPost]
+        [Route("increasecount/{bag_id}")]
+        public virtual Task<DailyClickDto> IncreaseAsync(Guid bag_id)
+        {
+            return _dailyClicksAppService.IncreaseAsync(bag_id);
+        }
     }
 }

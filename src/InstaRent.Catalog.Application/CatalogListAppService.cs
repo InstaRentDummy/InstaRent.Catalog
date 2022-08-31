@@ -15,12 +15,15 @@ namespace InstaRent.Catalog
         private readonly IUserPreferenceRepository _userPreferenceRepository;
         private readonly ITotalClickRepository _totalClickRepository;
         private readonly IDailyClickRepository _dailyClickRepository;
+        private readonly DailyClickManager _dailyClickManager;
+        private readonly TotalClickManager _totalClickManager;
 
-        public CatalogListAppService(IDailyClickRepository dailyClickRepository, IUserPreferenceRepository userPreferenceRepository, ITotalClickRepository totalClickRepository)
-        {
-            _dailyClickRepository = dailyClickRepository;
+        public CatalogListAppService(IDailyClickRepository dailyClickRepository, DailyClickManager dailyClickManager, IUserPreferenceRepository userPreferenceRepository, ITotalClickRepository totalClickRepository, TotalClickManager totalClickManager)
+        { _dailyClickRepository = dailyClickRepository;
             _userPreferenceRepository = userPreferenceRepository;
             _totalClickRepository = totalClickRepository;
+            _dailyClickManager = dailyClickManager;
+            _totalClickManager = totalClickManager;
         }
 
         public virtual async Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(GetDailyClicksInput input)
@@ -29,7 +32,7 @@ namespace InstaRent.Catalog
             if (!string.IsNullOrEmpty(input.Sorting))
                 sortstr = " LastModificationTime DESC, clicks DESC" + " ," + input.Sorting;
 
-            var totalCount = await _dailyClickRepository.GetCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId);
+            var totalCount = await _dailyClickRepository.GetActiveCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId);
             var items = await _dailyClickRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId, sortstr, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<DailyClickWithNavigationPropertiesDto>
@@ -73,6 +76,14 @@ namespace InstaRent.Catalog
             };
 
             return response;
+        }
+
+        public virtual async Task<string>  IncreaseAsync(Guid bag_id)
+        {
+            var dailyclick=  await _dailyClickManager.IncreaseAsync(bag_id);
+            var totalclick=  await _totalClickManager.IncreaseAsync(bag_id);
+            return "{ \"dailyclicks\" : " + dailyclick.clicks.ToString() + ", \"totalclicks\": " + totalclick.clicks.ToString() + "}";
+
         }
     }
 

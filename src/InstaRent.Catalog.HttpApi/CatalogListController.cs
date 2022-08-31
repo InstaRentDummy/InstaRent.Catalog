@@ -2,6 +2,7 @@
 using InstaRent.Catalog.DailyClicks;
 using InstaRent.Catalog.TotalClicks;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -46,6 +47,13 @@ namespace InstaRent.Catalog
             return _catalogListAppService.GetRecommendationsAsync(userId);
         }
 
-    }
+        [HttpPost]
+        [Route("increasecount/{bag_id}")]
+        public Task<string> IncreaseAsync(Guid bag_id)
+        {
+            return _catalogListAppService.IncreaseAsync(bag_id);
+        }
 
+    }
 }
+

@@ -58,7 +58,7 @@ namespace InstaRent.Catalog.DailyClicks
                 DailyClick = s,
                 Bag = dbContext.Bags.AsQueryable().FirstOrDefault(e => e.Id == s.BagId),
 
-            }).ToList();
+            }).Where(b => b.Bag.isdeleted.Equals(false)).ToList();
         }
 
         public async Task<List<DailyClick>> GetListAsync(
@@ -92,6 +92,28 @@ namespace InstaRent.Catalog.DailyClicks
             return await query.As<IMongoQueryable<DailyClick>>().LongCountAsync(GetCancellationToken(cancellationToken));
         }
 
+        public async Task<long> GetActiveCountAsync(
+           string filterText = null,
+           long? clicksMin = null,
+           long? clicksMax = null,
+           DateTime? lastModificationTimeMin = null,
+           DateTime? lastModificationTimeMax = null,
+           Guid? bagId = null,
+           CancellationToken cancellationToken = default)
+        {
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
+
+            var dailyClicks = await query.As<IMongoQueryable<DailyClick>>().ToListAsync(GetCancellationToken(cancellationToken));
+
+            var dbContext = await GetDbContextAsync(cancellationToken);
+            return dailyClicks.Select(s => new DailyClickWithNavigationProperties
+            {
+                DailyClick = s,
+                Bag = dbContext.Bags.AsQueryable().FirstOrDefault(e => e.Id == s.BagId),
+
+            }).Where(b => b.Bag.isdeleted.Equals(false)).LongCount();
+        }
+
         protected virtual IQueryable<DailyClick> ApplyFilter(
             IQueryable<DailyClick> query,
             string filterText,
@@ -109,5 +131,7 @@ namespace InstaRent.Catalog.DailyClicks
                     .WhereIf(lastModificationTimeMax.HasValue, e => e.LastModificationTime <= lastModificationTimeMax.Value)
                     .WhereIf(bagId != null && bagId != Guid.Empty, e => e.BagId == bagId);
         }
+
+
     }
 }

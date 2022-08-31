@@ -21,5 +21,7 @@ namespace InstaRent.Catalog.TotalClicks
         Task<TotalClickDto> CreateAsync(TotalClickCreateDto input);
 
         Task<TotalClickDto> UpdateAsync(Guid id, TotalClickUpdateDto input);
+
+        Task<TotalClickDto> IncreaseAsync(Guid bag_id);
     }
 }

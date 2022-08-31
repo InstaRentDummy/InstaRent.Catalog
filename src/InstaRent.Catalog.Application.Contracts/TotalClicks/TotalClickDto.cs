@@ -8,6 +8,8 @@ namespace InstaRent.Catalog.TotalClicks
     public class TotalClickDto : EntityDto<Guid>, IHasConcurrencyStamp
     {
         public long clicks { get; set; }
+
+        [JsonPropertyName("bag_id")]
         public Guid? BagId { get; set; }
         [JsonIgnore]
         public DateTime? LastModificationTime { get; set; }

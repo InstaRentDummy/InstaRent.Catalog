@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using InstaRent.Catalog.MongoDB;
+using InstaRent.Catalog.Grpc;
+//using InstaRent.Catalog.EntityFrameworkCore;
+using InstaRent.Catalog.MultiTenancy;
 //using IdentityModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -10,11 +10,14 @@ using Microsoft.AspNetCore.DataProtection;
 //using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-//using InstaRent.Catalog.EntityFrameworkCore;
-using InstaRent.Catalog.MultiTenancy;
-using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Volo.Abp;
+using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 //using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
@@ -31,9 +34,9 @@ using Volo.Abp.MultiTenancy;
 //using Volo.Abp.Security.Claims;
 //using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.Swashbuckle;
+using Volo.Abp.Uow;
 //using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
-using InstaRent.Catalog.MongoDB;
 
 namespace InstaRent.Catalog;
 
@@ -157,6 +160,18 @@ public class CatalogHttpApiHostModule : AbpModule
                     .AllowCredentials();
             });
         });
+
+        Configure<AbpUnitOfWorkDefaultOptions>(options =>
+        {
+            //Standalone MongoDB servers don't support transactions
+            options.TransactionBehavior = UnitOfWorkTransactionBehavior.Disabled;
+        });
+
+        Configure<AbpAntiForgeryOptions>(options => { options.AutoValidate = false; });
+        context.Services.AddGrpc(options =>
+        {
+            options.EnableDetailedErrors = true;
+        });
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
@@ -196,7 +211,11 @@ public class CatalogHttpApiHostModule : AbpModule
             options.OAuthScopes("Catalog");
         });
         app.UseAuditing();
+        app.UseUnitOfWork();
         app.UseAbpSerilogEnrichers();
-        app.UseConfiguredEndpoints();
+        app.UseConfiguredEndpoints(endpoints =>
+        {
+            endpoints.MapGrpcService<PublicBagGrpService>();
+        });
     }
 }

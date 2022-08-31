@@ -88,5 +88,11 @@ namespace InstaRent.Catalog.DailyClicks
 
             return ObjectMapper.Map<DailyClick, DailyClickDto>(dailyClick);
         }
+
+        public virtual async Task<DailyClickDto> IncreaseAsync(Guid bag_id)
+        {
+            var dailyClick = await  _dailyClickManager.IncreaseAsync(bag_id);
+            return ObjectMapper.Map<DailyClick, DailyClickDto>(dailyClick);
+        }
     }
 }

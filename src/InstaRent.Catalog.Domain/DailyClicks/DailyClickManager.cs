@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.Data;
+using Volo.Abp.Timing;
 
 namespace InstaRent.Catalog.DailyClicks
 {
@@ -45,6 +46,34 @@ namespace InstaRent.Catalog.DailyClicks
 
             dailyClick.SetConcurrencyStampIfNotNull(concurrencyStamp);
             return await _dailyClickRepository.UpdateAsync(dailyClick);
+        }
+
+        public async Task<DailyClick> IncreaseAsync(
+            Guid? bagId
+        )
+        {
+            var queryable = await _dailyClickRepository.GetQueryableAsync();
+            var query = queryable.Where(x => x.BagId == bagId && (x.LastModificationTime.Value>= DateTime.Now.Date));
+
+            var dailyClick = await AsyncExecuter.FirstOrDefaultAsync(query);
+
+            if (dailyClick != null)
+            {
+                dailyClick.BagId = bagId;
+                dailyClick.clicks = dailyClick.clicks + 1;
+                dailyClick.LastModificationTime = DateTime.Now;
+
+                return await _dailyClickRepository.UpdateAsync(dailyClick);
+            }
+            else
+            {
+
+                dailyClick = new DailyClick(
+                               GuidGenerator.Create(),
+                               bagId, 1, DateTime.Now
+                               );
+                return await _dailyClickRepository.InsertAsync(dailyClick);
+            }
         }
 
     }
