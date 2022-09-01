@@ -14,6 +14,8 @@ namespace InstaRent.Catalog.Bags
         public List<string> image_urls { get; set; }
         public DateTime rental_start_date { get; set; }
         public DateTime rental_end_date { get; set; }
+
+        public double price { get; set; }
         public List<string> tags { get; set; }
         [StringLength(BagConsts.statusMaxLength)]
         public string status { get; set; }

@@ -21,7 +21,8 @@ message BagResponse {
 	repeated string image_urls = 4;
 	google.protobuf.Timestamp rental_start_date = 5;
 	google.protobuf.Timestamp rental_end_date = 6;
-	repeated string tags = 7;
-	string status = 8;
-	string renter_id = 9;
+	double price =7;
+	repeated string tags = 8;
+	string status = 9;
+	string renter_id = 10;
 }

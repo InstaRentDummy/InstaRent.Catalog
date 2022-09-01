@@ -26,8 +26,8 @@ namespace InstaRent.Catalog.Bags
 
         public virtual async Task<PagedResultDto<BagDto>> GetListAsync(GetBagsInput input)
         {
-            var totalCount = await _bagRepository.GetCountAsync(input.FilterText, input.bag_name, input.description, input.image_urls, input.rental_start_dateMin, input.rental_start_dateMax, input.rental_end_dateMin, input.rental_end_dateMax, input.tags, input.status, input.renter_id);
-            var items = await _bagRepository.GetListAsync(input.FilterText, input.bag_name, input.description, input.image_urls, input.rental_start_dateMin, input.rental_start_dateMax, input.rental_end_dateMin, input.rental_end_dateMax, input.tags, input.status, input.renter_id, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var totalCount = await _bagRepository.GetCountAsync(input.FilterText, input.bag_name, input.description, input.image_urls, input.rental_start_dateMin, input.rental_start_dateMax, input.rental_end_dateMin, input.rental_end_dateMax,input.priceMin,input.priceMax, input.tags, input.status, input.renter_id,input.isdeleted);
+            var items = await _bagRepository.GetListAsync(input.FilterText, input.bag_name, input.description, input.image_urls, input.rental_start_dateMin, input.rental_start_dateMax, input.rental_end_dateMin, input.rental_end_dateMax, input.priceMin, input.priceMax, input.tags, input.status, input.renter_id,  input.isdeleted,input.Sorting, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<BagDto>
             {
@@ -50,7 +50,7 @@ namespace InstaRent.Catalog.Bags
         {
 
             var bag = await _bagManager.CreateAsync(
-            input.bag_name, input.description, input.image_urls, input.rental_start_date, input.rental_end_date, input.tags, input.status, input.renter_id
+            input.bag_name, input.description, input.image_urls, input.rental_start_date, input.rental_end_date, input.price, input.tags, input.status, input.renter_id 
             );
 
             return ObjectMapper.Map<Bag, BagDto>(bag);
@@ -61,7 +61,7 @@ namespace InstaRent.Catalog.Bags
 
             var bag = await _bagManager.UpdateAsync(
             id,
-            input.bag_name, input.description, input.image_urls, input.rental_start_date, input.rental_end_date, input.tags, input.status, input.renter_id, input.ConcurrencyStamp
+            input.bag_name, input.description, input.image_urls, input.rental_start_date, input.rental_end_date, input.price, input.tags, input.status, input.renter_id, input.ConcurrencyStamp
             );
 
             return ObjectMapper.Map<Bag, BagDto>(bag);

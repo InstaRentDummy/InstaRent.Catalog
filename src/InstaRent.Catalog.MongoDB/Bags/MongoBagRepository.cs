@@ -29,15 +29,18 @@ namespace InstaRent.Catalog.Bags
             DateTime? rental_start_dateMax = null,
             DateTime? rental_end_dateMin = null,
             DateTime? rental_end_dateMax = null,
+            double priceMin = 0.0,
+            double priceMax = double.MaxValue,
             string tags = null,
             string status = null,
             string renter_id = null,
+            bool? isdeleted = null,
             string sorting = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
             CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax, tags, status, renter_id);
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax,priceMin,priceMax, tags, status, renter_id,isdeleted);
             query = query.OrderBy(string.IsNullOrWhiteSpace(sorting) ? BagConsts.GetDefaultSorting(false) : sorting);
             return await query.As<IMongoQueryable<Bag>>()
                 .PageBy<Bag, IMongoQueryable<Bag>>(skipCount, maxResultCount)
@@ -53,12 +56,15 @@ namespace InstaRent.Catalog.Bags
            DateTime? rental_start_dateMax = null,
            DateTime? rental_end_dateMin = null,
            DateTime? rental_end_dateMax = null,
+           double priceMin = 0.0,
+           double priceMax = double.MaxValue,
            string tags = null,
            string status = null,
            string renter_id = null,
+           bool? isdeleted = null,
            CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax, tags, status, renter_id);
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax, priceMin, priceMax, tags, status, renter_id,isdeleted);
             return await query.As<IMongoQueryable<Bag>>().LongCountAsync(GetCancellationToken(cancellationToken));
         }
 
@@ -72,12 +78,15 @@ namespace InstaRent.Catalog.Bags
             DateTime? rental_start_dateMax = null,
             DateTime? rental_end_dateMin = null,
             DateTime? rental_end_dateMax = null,
+            double priceMin = 0.0,
+            double priceMax = double.MaxValue,
             string tags = null,
             string status = null,
-            string renter_id = null)
+            string renter_id = null,
+            bool? isdeleted = null)
         {
             return query
-                .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.bag_name.Contains(filterText) || e.description.Contains(filterText) || e.image_urls.Any(i => i.Contains(filterText)) || e.tags.Any(t => t.Contains(filterText))   || e.status.Contains(filterText) || e.renter_id.Contains(filterText))
+                .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.bag_name.Contains(filterText) || e.description.Contains(filterText) || e.image_urls.Any(i => i.Contains(filterText)) || e.tags.Any(t => t.Contains(filterText)) || e.status.Contains(filterText) || e.renter_id.Contains(filterText))
                     .WhereIf(!string.IsNullOrWhiteSpace(bag_name), e => e.bag_name.Contains(bag_name))
                     .WhereIf(!string.IsNullOrWhiteSpace(description), e => e.description.Contains(description))
                     .WhereIf(!string.IsNullOrWhiteSpace(image_urls), e => e.image_urls.Any(i => i.Contains(image_urls)))
@@ -85,9 +94,12 @@ namespace InstaRent.Catalog.Bags
                     .WhereIf(rental_start_dateMax.HasValue, e => e.rental_start_date <= rental_start_dateMax.Value)
                     .WhereIf(rental_end_dateMin.HasValue, e => e.rental_end_date >= rental_end_dateMin.Value)
                     .WhereIf(rental_end_dateMax.HasValue, e => e.rental_end_date <= rental_end_dateMax.Value)
+                    .WhereIf(priceMin != 0.0, e => e.price >= priceMin)
+                    .WhereIf(priceMax != double.MaxValue, e => e.price <= priceMax)
                     .WhereIf(!string.IsNullOrWhiteSpace(tags), e => e.tags.Any(t => t.Contains(tags)))
                     .WhereIf(!string.IsNullOrWhiteSpace(status), e => e.status.Contains(status))
-                    .WhereIf(!string.IsNullOrWhiteSpace(renter_id), e => e.renter_id.Contains(renter_id));
+                    .WhereIf(!string.IsNullOrWhiteSpace(renter_id), e => e.renter_id.Contains(renter_id))
+                    .WhereIf(isdeleted.HasValue, e => e.isdeleted.Equals(isdeleted.Value));
         }
     }
 }

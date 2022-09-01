@@ -18,9 +18,12 @@ namespace InstaRent.Catalog.Bags
             DateTime? rental_start_dateMax = null,
             DateTime? rental_end_dateMin = null,
             DateTime? rental_end_dateMax = null,
+            double priceMin = 0.0,
+            double priceMax = double.MaxValue,
             string tags = null,
             string status = null,
             string renter_id = null,
+            bool? isdeleted = null,
             string sorting = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
@@ -36,9 +39,12 @@ namespace InstaRent.Catalog.Bags
             DateTime? rental_start_dateMax = null,
             DateTime? rental_end_dateMin = null,
             DateTime? rental_end_dateMax = null,
+            double priceMin = 0.0,
+            double priceMax = double.MaxValue,
             string tags = null,
             string status = null,
             string renter_id = null,
+            bool? isdeleted = null,
             CancellationToken cancellationToken = default);
     }
 }

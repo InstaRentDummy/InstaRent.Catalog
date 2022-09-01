@@ -20,11 +20,11 @@ namespace InstaRent.Catalog.Bags
         }
 
         public async Task<Bag> CreateAsync(
-        string bag_name, string description, List<string> image_urls, DateTime rental_start_date, DateTime rental_end_date, List<string> tags, string status, string renter_id)
+        string bag_name, string description, List<string> image_urls, DateTime rental_start_date, DateTime rental_end_date, double price, List<string> tags, string status, string renter_id)
         {
             var bag = new Bag(
              GuidGenerator.Create(),
-             bag_name, description, image_urls, rental_start_date, rental_end_date, tags, status, renter_id,false
+             bag_name, description, image_urls, rental_start_date, rental_end_date, price, tags, status, renter_id,false
              );
 
             return await _bagRepository.InsertAsync(bag);
@@ -32,7 +32,7 @@ namespace InstaRent.Catalog.Bags
 
         public async Task<Bag> UpdateAsync(
             Guid id,
-            string bag_name, string description, List<string> image_urls, DateTime rental_start_date, DateTime rental_end_date, List<string> tags, string status, string renter_id, [CanBeNull] string concurrencyStamp = null
+            string bag_name, string description, List<string> image_urls, DateTime rental_start_date, DateTime rental_end_date,double price, List<string> tags, string status, string renter_id, [CanBeNull] string concurrencyStamp = null
         )
         {
             var queryable = await _bagRepository.GetQueryableAsync();
@@ -45,6 +45,7 @@ namespace InstaRent.Catalog.Bags
             bag.image_urls = image_urls;
             bag.rental_start_date = rental_start_date;
             bag.rental_end_date = rental_end_date;
+            bag.price = price;
             bag.tags = tags;
             bag.status = status;
             bag.renter_id = renter_id;
