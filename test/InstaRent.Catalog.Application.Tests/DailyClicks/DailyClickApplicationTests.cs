@@ -48,7 +48,7 @@ namespace InstaRent.Catalog.DailyClicks
             // Arrange
             var input = new DailyClickCreateDto
             {
-                clicks = 1807566977
+                clicks = 1807
             };
 
             // Act
@@ -58,7 +58,7 @@ namespace InstaRent.Catalog.DailyClicks
             var result = await _dailyClickRepository.FindAsync(c => c.clicks == serviceResult.clicks);
 
             result.ShouldNotBe(null);
-            result.clicks.ShouldBe(1807566977);
+            result.clicks.ShouldBe(1807);
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace InstaRent.Catalog.DailyClicks
             // Arrange
             var input = new DailyClickUpdateDto()
             {
-                clicks = 69636145
+                clicks = 6963
             };
 
             // Act
@@ -77,7 +77,7 @@ namespace InstaRent.Catalog.DailyClicks
             var result = await _dailyClickRepository.FindAsync(c => c.Id == serviceResult.Id);
 
             result.ShouldNotBe(null);
-            result.clicks.ShouldBe(69636145);
+            result.clicks.ShouldBe(6963);
         }
 
         [Fact]

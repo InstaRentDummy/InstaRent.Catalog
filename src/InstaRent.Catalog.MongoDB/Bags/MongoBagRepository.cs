@@ -29,8 +29,8 @@ namespace InstaRent.Catalog.Bags
             DateTime? rental_start_dateMax = null,
             DateTime? rental_end_dateMin = null,
             DateTime? rental_end_dateMax = null,
-            double priceMin = 0.0,
-            double priceMax = double.MaxValue,
+            double? priceMin = null,
+            double? priceMax = null,
             string tags = null,
             string status = null,
             string renter_id = null,
@@ -40,7 +40,7 @@ namespace InstaRent.Catalog.Bags
             int skipCount = 0,
             CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax,priceMin,priceMax, tags, status, renter_id,isdeleted);
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax, priceMin, priceMax, tags, status, renter_id, isdeleted);
             query = query.OrderBy(string.IsNullOrWhiteSpace(sorting) ? BagConsts.GetDefaultSorting(false) : sorting);
             return await query.As<IMongoQueryable<Bag>>()
                 .PageBy<Bag, IMongoQueryable<Bag>>(skipCount, maxResultCount)
@@ -56,15 +56,15 @@ namespace InstaRent.Catalog.Bags
            DateTime? rental_start_dateMax = null,
            DateTime? rental_end_dateMin = null,
            DateTime? rental_end_dateMax = null,
-           double priceMin = 0.0,
-           double priceMax = double.MaxValue,
+           double? priceMin = null,
+           double? priceMax = null,
            string tags = null,
            string status = null,
            string renter_id = null,
            bool? isdeleted = null,
            CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax, priceMin, priceMax, tags, status, renter_id,isdeleted);
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax, priceMin, priceMax, tags, status, renter_id, isdeleted);
             return await query.As<IMongoQueryable<Bag>>().LongCountAsync(GetCancellationToken(cancellationToken));
         }
 
@@ -78,8 +78,8 @@ namespace InstaRent.Catalog.Bags
             DateTime? rental_start_dateMax = null,
             DateTime? rental_end_dateMin = null,
             DateTime? rental_end_dateMax = null,
-            double priceMin = 0.0,
-            double priceMax = double.MaxValue,
+            double? priceMin = null,
+            double? priceMax = null,
             string tags = null,
             string status = null,
             string renter_id = null,
@@ -94,8 +94,8 @@ namespace InstaRent.Catalog.Bags
                     .WhereIf(rental_start_dateMax.HasValue, e => e.rental_start_date <= rental_start_dateMax.Value)
                     .WhereIf(rental_end_dateMin.HasValue, e => e.rental_end_date >= rental_end_dateMin.Value)
                     .WhereIf(rental_end_dateMax.HasValue, e => e.rental_end_date <= rental_end_dateMax.Value)
-                    .WhereIf(priceMin != 0.0, e => e.price >= priceMin)
-                    .WhereIf(priceMax != double.MaxValue, e => e.price <= priceMax)
+                    .WhereIf(priceMin.HasValue, e => e.price >= priceMin.Value)
+                    .WhereIf(priceMax.HasValue, e => e.price <= priceMax.Value)
                     .WhereIf(!string.IsNullOrWhiteSpace(tags), e => e.tags.Any(t => t.Contains(tags)))
                     .WhereIf(!string.IsNullOrWhiteSpace(status), e => e.status.Contains(status))
                     .WhereIf(!string.IsNullOrWhiteSpace(renter_id), e => e.renter_id.Contains(renter_id))
