@@ -3,17 +3,17 @@ using InstaRent.Catalog.Grpc;
 //using InstaRent.Catalog.EntityFrameworkCore;
 using InstaRent.Catalog.MultiTenancy;
 //using IdentityModel;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+//using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.DataProtection;
+//using Microsoft.AspNetCore.DataProtection;
 //using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using StackExchange.Redis;
+//using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Volo.Abp;
@@ -23,8 +23,8 @@ using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 using Volo.Abp.AspNetCore.Serilog;
 //using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.Autofac;
-using Volo.Abp.Caching;
-using Volo.Abp.Caching.StackExchangeRedis;
+//using Volo.Abp.Caching;
+//using Volo.Abp.Caching.StackExchangeRedis;
 //using Volo.Abp.EntityFrameworkCore;
 //using Volo.Abp.EntityFrameworkCore.SqlServer;
 //using Volo.Abp.Localization;
@@ -37,6 +37,7 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.Uow;
 //using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.VirtualFileSystem;
+using Steeltoe.Discovery.Client;
 
 namespace InstaRent.Catalog;
 
@@ -46,7 +47,7 @@ namespace InstaRent.Catalog;
     typeof(CatalogHttpApiModule),
     typeof(AbpAspNetCoreMvcUiMultiTenancyModule),
     typeof(AbpAutofacModule),
-    typeof(AbpCachingStackExchangeRedisModule),
+    //typeof(AbpCachingStackExchangeRedisModule),
     //typeof(AbpEntityFrameworkCoreSqlServerModule),
     //typeof(AbpAuditLoggingEntityFrameworkCoreModule),
     //typeof(AbpPermissionManagementEntityFrameworkCoreModule),
@@ -68,7 +69,7 @@ public class CatalogHttpApiHostModule : AbpModule
         //{
         //    options.UseSqlServer();
         //});
-
+        
         Configure<AbpMultiTenancyOptions>(options =>
         {
             options.IsEnabled = MultiTenancyConsts.IsEnabled;
@@ -85,19 +86,29 @@ public class CatalogHttpApiHostModule : AbpModule
             });
         }
 
-        context.Services.AddAbpSwaggerGenWithOAuth(
-            configuration["AuthServer:Authority"],
-            new Dictionary<string, string>
-            {
-                {"Catalog", "Catalog API"}
-            },
-            options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo {Title = "Catalog API", Version = "v1"});
-                options.DocInclusionPredicate((docName, description) => true);
-                options.CustomSchemaIds(type => type.FullName);
-                options.HideAbpEndpoints();
-            });
+        context.Services.AddAbpSwaggerGen(
+                options =>
+                {
+                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Catalog API", Version = "v1" });
+                    options.DocInclusionPredicate((docName, description) => true);
+                    options.CustomSchemaIds(type => type.FullName);
+                    options.HideAbpEndpoints();
+                }
+            );
+
+        //context.Services.AddAbpSwaggerGenWithOAuth(
+        //    configuration["AuthServer:Authority"],
+        //    new Dictionary<string, string>
+        //    {
+        //        {"Catalog", "Catalog API"}
+        //    },
+        //    options =>
+        //    {
+        //        options.SwaggerDoc("v1", new OpenApiInfo {Title = "Catalog API", Version = "v1"});
+        //        options.DocInclusionPredicate((docName, description) => true);
+        //        options.CustomSchemaIds(type => type.FullName);
+        //        options.HideAbpEndpoints();
+        //    });
 
         //Configure<AbpLocalizationOptions>(options =>
         //{
@@ -122,25 +133,27 @@ public class CatalogHttpApiHostModule : AbpModule
         //    options.Languages.Add(new LanguageInfo("es", "es", "Español"));
         //});
 
-        context.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.Authority = configuration["AuthServer:Authority"];
-                options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
-                options.Audience = "Catalog";
-            });
+        //context.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //    .AddJwtBearer(options =>
+        //    {
+        //        options.Authority = configuration["AuthServer:Authority"];
+        //        options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
+        //        options.Audience = "Catalog";
+        //    });
 
-        Configure<AbpDistributedCacheOptions>(options =>
-        {
-            options.KeyPrefix = "Catalog:";
-        });
+        //Configure<AbpDistributedCacheOptions>(options =>
+        //{
+        //    options.KeyPrefix = "Catalog:";
+        //});
 
-        var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("Catalog");
-        if (!hostingEnvironment.IsDevelopment())
-        {
-            var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
-            dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "Catalog-Protection-Keys");
-        }
+        //var dataProtectionBuilder = context.Services.AddDataProtection().SetApplicationName("Catalog");
+        //if (!hostingEnvironment.IsDevelopment())
+        //{
+        //    var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
+        //    dataProtectionBuilder.PersistKeysToStackExchangeRedis(redis, "Catalog-Protection-Keys");
+        //}
+
+        context.Services.AddDiscoveryClient(configuration);
 
         context.Services.AddCors(options =>
         {
@@ -193,6 +206,7 @@ public class CatalogHttpApiHostModule : AbpModule
         app.UseStaticFiles();
         app.UseRouting();
         app.UseCors();
+        app.UseDiscoveryClient();
         app.UseAuthentication();
         if (MultiTenancyConsts.IsEnabled)
         {
@@ -201,15 +215,22 @@ public class CatalogHttpApiHostModule : AbpModule
         app.UseAbpRequestLocalization();
         app.UseAuthorization();
         app.UseSwagger();
+
+        //app.UseAbpSwaggerUI(options =>
+        //{
+        //    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Support APP API");
+
+        //    var configuration = context.GetConfiguration();
+        //    options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
+        //    options.OAuthClientSecret(configuration["AuthServer:SwaggerClientSecret"]);
+        //    options.OAuthScopes("Catalog");
+        //});
+
         app.UseAbpSwaggerUI(options =>
         {
-            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Support APP API");
-
-            var configuration = context.GetConfiguration();
-            options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
-            options.OAuthClientSecret(configuration["AuthServer:SwaggerClientSecret"]);
-            options.OAuthScopes("Catalog");
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog API");
         });
+
         app.UseAuditing();
         app.UseUnitOfWork();
         app.UseAbpSerilogEnrichers();
