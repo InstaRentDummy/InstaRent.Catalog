@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using Volo.Abp;
+using Volo.Abp.Auditing;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace InstaRent.Catalog.Bags
 {
-    public class Bag : Entity<Guid>, IHasConcurrencyStamp
+    public class Bag : Entity<Guid>, IHasConcurrencyStamp, IHasCreationTime
     {
         [NotNull]
         public virtual string bag_name { get; set; }
@@ -32,6 +33,7 @@ namespace InstaRent.Catalog.Bags
 
         [NotNull]
         public virtual string renter_id { get; set; }
+         
 
         [CanBeNull]
         public virtual DateTime? LastModificationTime { get; set; }
@@ -40,6 +42,8 @@ namespace InstaRent.Catalog.Bags
         public virtual bool isdeleted { get; set; }
 
         public string ConcurrencyStamp { get; set; }
+
+        public DateTime CreationTime { get; }
 
         public Bag()
         {
@@ -66,6 +70,8 @@ namespace InstaRent.Catalog.Bags
             this.renter_id = renter_id;
             this.isdeleted = isdeleted;
             this.LastModificationTime = DateTime.Now;
+            this.CreationTime = DateTime.Now;
+             
         }
     }
 }

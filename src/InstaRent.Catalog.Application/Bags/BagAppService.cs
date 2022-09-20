@@ -26,8 +26,8 @@ namespace InstaRent.Catalog.Bags
 
         public virtual async Task<PagedResultDto<BagDto>> GetListAsync(GetBagsInput input)
         {
-            var totalCount = await _bagRepository.GetCountAsync(input.FilterText, input.bag_name, input.description, input.image_urls, input.rental_start_dateMin, input.rental_start_dateMax, input.rental_end_dateMin, input.rental_end_dateMax,input.priceMin,input.priceMax, input.tags, input.status, input.renter_id,input.isdeleted);
-            var items = await _bagRepository.GetListAsync(input.FilterText, input.bag_name, input.description, input.image_urls, input.rental_start_dateMin, input.rental_start_dateMax, input.rental_end_dateMin, input.rental_end_dateMax, input.priceMin, input.priceMax, input.tags, input.status, input.renter_id,  input.isdeleted,input.Sorting, input.MaxResultCount, input.SkipCount);
+            var totalCount = await _bagRepository.GetCountAsync(input.FilterText, input.bag_name, input.description, input.image_urls, input.rental_start_dateMin, input.rental_start_dateMax, input.rental_end_dateMin, input.rental_end_dateMax,input.priceMin,input.priceMax, input.tags, input.status, input.renter_id,input.isdeleted, input.creation_timeMin, input.creation_timeMax);
+            var items = await _bagRepository.GetListAsync(input.FilterText, input.bag_name, input.description, input.image_urls, input.rental_start_dateMin, input.rental_start_dateMax, input.rental_end_dateMin, input.rental_end_dateMax, input.priceMin, input.priceMax, input.tags, input.status, input.renter_id,  input.isdeleted, input.creation_timeMin,input.creation_timeMax,input.Sorting, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<BagDto>
             {

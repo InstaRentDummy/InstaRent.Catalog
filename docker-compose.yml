@@ -4,7 +4,7 @@ services:
    catalog:
     build:
       context: ../../
-      dockerfile: /host/InstaRent.Catalog.Host/Dockerfile
+      dockerfile: /host/InstaRent.Catalog.HttpApi.Host/Dockerfile
     
 networks:
   instarent-network:

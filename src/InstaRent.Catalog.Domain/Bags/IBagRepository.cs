@@ -24,6 +24,8 @@ namespace InstaRent.Catalog.Bags
             string status = null,
             string renter_id = null,
             bool? isdeleted = null,
+            DateTime? creation_timeMin = null,
+            DateTime? creation_timeMax = null,
             string sorting = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
@@ -45,6 +47,8 @@ namespace InstaRent.Catalog.Bags
             string status = null,
             string renter_id = null,
             bool? isdeleted = null,
+            DateTime? creation_timeMin = null,
+            DateTime? creation_timeMax = null,
             CancellationToken cancellationToken = default);
     }
 }

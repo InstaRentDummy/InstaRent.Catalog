@@ -35,6 +35,8 @@ namespace InstaRent.Catalog.Bags
             string status = null,
             string renter_id = null,
             bool? isdeleted = null,
+            DateTime? creation_timeMin = null,
+            DateTime? creation_timeMax = null,
             string sorting = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
@@ -62,6 +64,8 @@ namespace InstaRent.Catalog.Bags
            string status = null,
            string renter_id = null,
            bool? isdeleted = null,
+           DateTime? creation_timeMin = null,
+           DateTime? creation_timeMax = null,
            CancellationToken cancellationToken = default)
         {
             var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax, priceMin, priceMax, tags, status, renter_id, isdeleted);
@@ -83,7 +87,10 @@ namespace InstaRent.Catalog.Bags
             string tags = null,
             string status = null,
             string renter_id = null,
-            bool? isdeleted = null)
+            bool? isdeleted = null,
+            DateTime? creation_timeMin = null,
+            DateTime? creation_timeMax = null
+            )
         {
             return query
                 .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.bag_name.Contains(filterText) || e.description.Contains(filterText) || e.image_urls.Any(i => i.Contains(filterText)) || e.tags.Any(t => t.Contains(filterText)) || e.status.Contains(filterText) || e.renter_id.Contains(filterText))
@@ -99,7 +106,9 @@ namespace InstaRent.Catalog.Bags
                     .WhereIf(!string.IsNullOrWhiteSpace(tags), e => e.tags.Any(t => t.Contains(tags)))
                     .WhereIf(!string.IsNullOrWhiteSpace(status), e => e.status.Contains(status))
                     .WhereIf(!string.IsNullOrWhiteSpace(renter_id), e => e.renter_id.Contains(renter_id))
-                    .WhereIf(isdeleted.HasValue, e => e.isdeleted.Equals(isdeleted.Value));
+                    .WhereIf(isdeleted.HasValue, e => e.isdeleted.Equals(isdeleted.Value))
+                    .WhereIf(creation_timeMin.HasValue, e => e.CreationTime >= creation_timeMin.Value)
+                    .WhereIf(creation_timeMax.HasValue, e => e.CreationTime <= creation_timeMax.Value);
         }
     }
 }

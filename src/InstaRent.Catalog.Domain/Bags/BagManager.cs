@@ -24,7 +24,7 @@ namespace InstaRent.Catalog.Bags
         {
             var bag = new Bag(
              GuidGenerator.Create(),
-             bag_name, description, image_urls, rental_start_date, rental_end_date, price, tags, status, renter_id,false
+             bag_name, description, image_urls, rental_start_date, rental_end_date, price, tags, status, renter_id,false 
              );
 
             return await _bagRepository.InsertAsync(bag);
@@ -62,9 +62,8 @@ namespace InstaRent.Catalog.Bags
 
             var bag = await AsyncExecuter.FirstOrDefaultAsync(query);
 
-            bag.isdeleted = true;
+            bag.isdeleted = true; 
             bag.LastModificationTime = DateTime.Now;
-
             bag.SetConcurrencyStampIfNotNull(concurrencyStamp);
             await _bagRepository.UpdateAsync(bag);
         }

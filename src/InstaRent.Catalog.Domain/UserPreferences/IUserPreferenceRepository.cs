@@ -11,6 +11,10 @@ namespace InstaRent.Catalog.UserPreferences
     {
         Task<List<Bag>> GetListWithNavigationPropertiesAsync(
            string userId = null,
+            double? avgRatingMin = null,
+            double? avgRatingMax = null,
+            double? totalNumofRatingMin = null,
+            double? totalNumofRatingMax = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
             CancellationToken cancellationToken = default
@@ -20,6 +24,10 @@ namespace InstaRent.Catalog.UserPreferences
             string filterText = null,
             string userId = null,
             string tags = null,
+            double? avgRatingMin = null,
+            double? avgRatingMax = null,
+            double? totalNumofRatingMin = null,
+            double? totalNumofRatingMax = null,
             string sorting = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
@@ -30,6 +38,10 @@ namespace InstaRent.Catalog.UserPreferences
            string filterText = null,
            string userId = null,
            string tags = null,
+            double? avgRatingMin = null,
+            double? avgRatingMax = null,
+            double? totalNumofRatingMin = null,
+            double? totalNumofRatingMax = null,
             CancellationToken cancellationToken = default);
     }
 }

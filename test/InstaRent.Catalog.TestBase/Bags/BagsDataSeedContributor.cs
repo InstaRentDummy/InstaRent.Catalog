@@ -40,6 +40,7 @@ namespace InstaRent.Catalog.Bags
                 status: "available",
                 renter_id: "renter_1@gmail.com",
                 isdeleted: false
+                 
             )); 
 
             await _bagRepository.InsertAsync(new Bag

@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Auditing;
 using Volo.Abp.Domain.Entities;
 
 namespace InstaRent.Catalog.Bags
 {
-    public class BagDto : EntityDto<Guid>, IHasConcurrencyStamp
+    public class BagDto : EntityDto<Guid>, IHasConcurrencyStamp,IHasCreationTime
     {
         public string bag_name { get; set; }
         public string description { get; set; }
@@ -20,6 +21,8 @@ namespace InstaRent.Catalog.Bags
         public string renter_id { get; set; }
         [JsonIgnore]
         public string ConcurrencyStamp { get; set; }
+        [JsonPropertyName("creation_time")]
+        public DateTime CreationTime { get; set; }
         [JsonIgnore]
         public DateTime? LastModificationTime { get; set; }
         public bool? isdeleted { get; set; }

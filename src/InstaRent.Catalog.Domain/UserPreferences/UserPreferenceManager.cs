@@ -18,10 +18,10 @@ namespace InstaRent.Catalog.UserPreferences
         }
 
         public async Task<UserPreference> CreateAsync(
-        string userId, List<Tag> tags)
+        string userId, List<Tag> tags, double? avgRating, double? totalNumOfRating)
         {
             var userPreference = new UserPreference(
-                GuidGenerator.Create(), userId, tags
+                GuidGenerator.Create(), userId, tags, avgRating, totalNumOfRating
              );
 
             return await _userPreferenceRepository.InsertAsync(userPreference);
@@ -29,7 +29,7 @@ namespace InstaRent.Catalog.UserPreferences
 
         public async Task<UserPreference> UpdateAsync(
             Guid id,
-            string userId, List<Tag> tags, [CanBeNull] string concurrencyStamp = null
+            string userId, List<Tag> tags,  double? avgRating, double? totalNumOfRating, [CanBeNull] string concurrencyStamp = null
         )
         {
             var queryable = await _userPreferenceRepository.GetQueryableAsync();
@@ -39,6 +39,9 @@ namespace InstaRent.Catalog.UserPreferences
 
             userPreference.UserId = userId;
             userPreference.Tags = tags;
+            
+            userPreference.AvgRating = avgRating;
+            userPreference.TotalNumofRating = totalNumOfRating ;
 
             userPreference.SetConcurrencyStampIfNotNull(concurrencyStamp);
             return await _userPreferenceRepository.UpdateAsync(userPreference);

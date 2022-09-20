@@ -26,8 +26,8 @@ namespace InstaRent.Catalog.UserPreferences
             if (input.Tags != null)
                 inputTag = input.Tags[0].tagname;
 
-            var totalCount = await _userPreferenceRepository.GetCountAsync(input.FilterText, input.UserId, inputTag);
-            var items = await _userPreferenceRepository.GetListAsync(input.FilterText, input.UserId, inputTag, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var totalCount = await _userPreferenceRepository.GetCountAsync(input.FilterText, input.UserId, inputTag, input.AvgRatingMin, input.AvgRatingMax, input.TotalNumofRatingMin, input.TotalNumofRatingMax);
+            var items = await _userPreferenceRepository.GetListAsync(input.FilterText, input.UserId, inputTag, input.AvgRatingMin, input.AvgRatingMax, input.TotalNumofRatingMin,input.TotalNumofRatingMax, input.Sorting, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<UserPreferenceDto>
             {
@@ -50,7 +50,7 @@ namespace InstaRent.Catalog.UserPreferences
         {
 
             var userPreference = await _userPreferenceManager.CreateAsync(
-            input.UserId, ObjectMapper.Map<List<TagDto>, List<Tag>>(input.Tags)
+            input.UserId, ObjectMapper.Map<List<TagDto>, List<Tag>>(input.Tags), input.AvgRating, input.TotalNumofRating
             );
 
             return ObjectMapper.Map<UserPreference, UserPreferenceDto>(userPreference);
@@ -63,7 +63,7 @@ namespace InstaRent.Catalog.UserPreferences
 
            var userPreference = await _userPreferenceManager.UpdateAsync(
             id,
-            input.UserId, ObjectMapper.Map<List<TagDto>, List<Tag>>(input.Tags), input.ConcurrencyStamp
+            input.UserId, ObjectMapper.Map<List<TagDto>, List<Tag>>(input.Tags), input.AvgRating, input.TotalNumofRating, input.ConcurrencyStamp
             );
 
             return ObjectMapper.Map<UserPreference, UserPreferenceDto>(userPreference);

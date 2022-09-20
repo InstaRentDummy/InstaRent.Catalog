@@ -15,6 +15,12 @@ namespace InstaRent.Catalog.UserPreferences
         [CanBeNull]
         public virtual  List<Tag> Tags { get; set; }
 
+        [CanBeNull]
+        public virtual double? AvgRating { get; set; }
+
+        [CanBeNull]
+        public virtual double? TotalNumofRating { get; set; }
+
         public string ConcurrencyStamp { get; set; }
 
         public UserPreference()
@@ -22,13 +28,15 @@ namespace InstaRent.Catalog.UserPreferences
 
         }
 
-        public UserPreference(Guid id, string userId, List<Tag> tags)
+        public UserPreference(Guid id, string userId, List<Tag> tags, double? avgRating, double? totalNumofRating)
         {
             ConcurrencyStamp = Guid.NewGuid().ToString("N");
             Check.Length(userId, nameof(userId), UserPreferenceConsts.UserIdMaxLength, 0);
             Id = id;
             UserId = userId;
             Tags = tags;
+            AvgRating = avgRating;
+            TotalNumofRating = totalNumofRating;
         }
 
     }
