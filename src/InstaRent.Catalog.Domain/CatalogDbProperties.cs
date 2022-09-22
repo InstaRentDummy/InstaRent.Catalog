@@ -6,5 +6,5 @@ public static class CatalogDbProperties
 
     public static string DbSchema { get; set; } = null;
 
-    public const string ConnectionStringName = "Catalog";
+    public const string ConnectionStringName = "InstaRent";
 }
