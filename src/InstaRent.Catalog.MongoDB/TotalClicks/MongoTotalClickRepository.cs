@@ -9,6 +9,7 @@ using Volo.Abp.Domain.Repositories.MongoDB;
 using Volo.Abp.MongoDB;
 using MongoDB.Driver.Linq;
 using MongoDB.Driver;
+using InstaRent.Catalog.DailyClicks;
 
 namespace InstaRent.Catalog.TotalClicks
 {
@@ -58,7 +59,35 @@ namespace InstaRent.Catalog.TotalClicks
                 TotalClick = s,
                 Bag = dbContext.Bags.AsQueryable().FirstOrDefault(e => e.Id == s.BagId),
 
-            }).ToList();
+            }).Where(b => b.Bag.isdeleted.Equals(false))
+            .WhereIf(!string.IsNullOrWhiteSpace(filterText), b => b.Bag.bag_name.Contains(filterText) || b.Bag.description.Contains(filterText) || b.Bag.image_urls.Any(i => i.Contains(filterText)) || b.Bag.tags.Any(t => t.Contains(filterText)) || b.Bag.status.Contains(filterText) || b.Bag.renter_id.Contains(filterText))
+            .ToList();
+        }
+
+        public async Task<long> GetActiveCountAsync(
+           string filterText = null,
+           long? clicksMin = null,
+           long? clicksMax = null,
+           DateTime? lastModificationTimeMin = null,
+           DateTime? lastModificationTimeMax = null,
+           Guid? bagId = null,
+           CancellationToken cancellationToken = default)
+        {
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
+
+            var totalClicks = await query.As<IMongoQueryable<TotalClick>>().ToListAsync(GetCancellationToken(cancellationToken));
+
+            var dbContext = await GetDbContextAsync(cancellationToken);
+            return totalClicks.Select(s => new TotalClickWithNavigationProperties
+            {
+                TotalClick = s,
+                Bag = dbContext.Bags.AsQueryable()
+                .FirstOrDefault(e => e.Id == s.BagId)
+
+            }).Where(b => b.Bag.isdeleted.Equals(false))
+              .WhereIf(!string.IsNullOrWhiteSpace(filterText), b => b.Bag.bag_name.Contains(filterText) || b.Bag.description.Contains(filterText) || b.Bag.image_urls.Any(i => i.Contains(filterText)) || b.Bag.tags.Any(t => t.Contains(filterText)) || b.Bag.status.Contains(filterText) || b.Bag.renter_id.Contains(filterText))
+
+            .LongCount();
         }
 
         public async Task<List<TotalClick>> GetListAsync(
@@ -92,6 +121,8 @@ namespace InstaRent.Catalog.TotalClicks
             var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
             return await query.As<IMongoQueryable<TotalClick>>().LongCountAsync(GetCancellationToken(cancellationToken));
         }
+
+
 
         protected virtual IQueryable<TotalClick> ApplyFilter(
             IQueryable<TotalClick> query,

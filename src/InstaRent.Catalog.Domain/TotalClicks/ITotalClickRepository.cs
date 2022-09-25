@@ -47,5 +47,15 @@ namespace InstaRent.Catalog.TotalClicks
             DateTime? lastModificationTimeMax = null,
             Guid? bagId = null,
             CancellationToken cancellationToken = default);
+
+        Task<long> GetActiveCountAsync(
+            string filterText = null,
+            long? clicksMin = null,
+            long? clicksMax = null,
+            DateTime? lastModificationTimeMin = null,
+            DateTime? lastModificationTimeMax = null,
+            Guid? bagId = null,
+            CancellationToken cancellationToken = default);
+
     }
 }

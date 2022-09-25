@@ -56,9 +56,11 @@ namespace InstaRent.Catalog.DailyClicks
             return dailyClicks.Select(s => new DailyClickWithNavigationProperties
             {
                 DailyClick = s,
-                Bag = dbContext.Bags.AsQueryable().FirstOrDefault(e => e.Id == s.BagId),
-
-            }).Where(b => b.Bag.isdeleted.Equals(false)).ToList();
+                Bag = dbContext.Bags.AsQueryable()
+                .FirstOrDefault(e => e.Id == s.BagId ),
+            }).Where(b => b.Bag.isdeleted.Equals(false))
+            .WhereIf(!string.IsNullOrWhiteSpace(filterText), b => b.Bag.bag_name.Contains(filterText) || b.Bag.description.Contains(filterText) || b.Bag.image_urls.Any(i => i.Contains(filterText)) || b.Bag.tags.Any(t => t.Contains(filterText)) || b.Bag.status.Contains(filterText) || b.Bag.renter_id.Contains(filterText))
+            .ToList();
         }
 
         public async Task<List<DailyClick>> GetListAsync(
@@ -109,9 +111,13 @@ namespace InstaRent.Catalog.DailyClicks
             return dailyClicks.Select(s => new DailyClickWithNavigationProperties
             {
                 DailyClick = s,
-                Bag = dbContext.Bags.AsQueryable().FirstOrDefault(e => e.Id == s.BagId),
+                Bag = dbContext.Bags.AsQueryable()
+                .FirstOrDefault(e => e.Id == s.BagId)
 
-            }).Where(b => b.Bag.isdeleted.Equals(false)).LongCount();
+            }).Where(b => b.Bag.isdeleted.Equals(false))
+              .WhereIf(!string.IsNullOrWhiteSpace(filterText), b => b.Bag.bag_name.Contains(filterText) || b.Bag.description.Contains(filterText) || b.Bag.image_urls.Any(i => i.Contains(filterText)) || b.Bag.tags.Any(t => t.Contains(filterText)) || b.Bag.status.Contains(filterText) || b.Bag.renter_id.Contains(filterText))
+
+            .LongCount();
         }
 
         protected virtual IQueryable<DailyClick> ApplyFilter(

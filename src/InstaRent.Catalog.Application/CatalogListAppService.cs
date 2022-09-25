@@ -48,7 +48,7 @@ namespace InstaRent.Catalog
             if (!string.IsNullOrEmpty(input.Sorting))
                 sortstr = " LastModificationTime DESC, clicks DESC" + " ," + input.Sorting;
 
-            var totalCount = await _totalClickRepository.GetCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId);
+            var totalCount = await _totalClickRepository.GetActiveCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId);
             var items = await _totalClickRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId, sortstr, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<TotalClickWithNavigationPropertiesDto>
