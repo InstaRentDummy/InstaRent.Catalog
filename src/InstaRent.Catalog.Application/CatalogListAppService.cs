@@ -28,9 +28,9 @@ namespace InstaRent.Catalog
 
         public virtual async Task<PagedResultDto<DailyClickWithNavigationPropertiesDto>> GetTrendingListAsync(GetDailyClicksInput input)
         {
-            var sortstr = " LastModificationTime DESC, clicks DESC";
+            var sortstr = " clicks DESC, LastModificationTime DESC ";
             if (!string.IsNullOrEmpty(input.Sorting))
-                sortstr = " LastModificationTime DESC, clicks DESC" + " ," + input.Sorting;
+                sortstr = " clicks DESC, LastModificationTime DESC " + " ," + input.Sorting;
 
             var totalCount = await _dailyClickRepository.GetActiveCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId);
             var items = await _dailyClickRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId, sortstr, input.MaxResultCount, input.SkipCount);
@@ -44,9 +44,9 @@ namespace InstaRent.Catalog
 
         public virtual async Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetMostVisitedListAsync(GetTotalClicksInput input)
         {
-            var sortstr = " LastModificationTime DESC, clicks DESC";
+            var sortstr = " clicks DESC, LastModificationTime DESC ";
             if (!string.IsNullOrEmpty(input.Sorting))
-                sortstr = " LastModificationTime DESC, clicks DESC" + " ," + input.Sorting;
+                sortstr = " clicks DESC, LastModificationTime DESC " + " ," + input.Sorting;
 
             var totalCount = await _totalClickRepository.GetActiveCountAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId);
             var items = await _totalClickRepository.GetListWithNavigationPropertiesAsync(input.FilterText, input.clicksMin, input.clicksMax, input.lastModificationTimeMin, input.lastModificationTimeMax, input.BagId, sortstr, input.MaxResultCount, input.SkipCount);

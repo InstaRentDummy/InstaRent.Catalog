@@ -43,7 +43,7 @@ namespace InstaRent.Catalog.Bags
 
         public string ConcurrencyStamp { get; set; }
 
-        public DateTime CreationTime { get; }
+        public virtual DateTime CreationTime { get; }
 
         public Bag()
         {

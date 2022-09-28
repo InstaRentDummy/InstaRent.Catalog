@@ -1,5 +1,8 @@
 ﻿using AutoMapper.Internal.Mappers;
+using InstaRent.Catalog.DailyClicks;
 using InstaRent.Catalog.Permissions;
+using InstaRent.Catalog.TotalClicks;
+using InstaRent.Catalog.UserPreferences;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
@@ -17,12 +20,18 @@ namespace InstaRent.Catalog.Bags
     {
         private readonly IBagRepository _bagRepository;
         private readonly BagManager _bagManager;
+        private readonly DailyClickManager _dailyClickManager;
+        private readonly TotalClickManager _totalClickManager;
 
-        public BagsAppService(IBagRepository bagRepository, BagManager bagManager)
+        public BagsAppService(IBagRepository bagRepository, BagManager bagManager,
+             DailyClickManager dailyClickManager, TotalClickManager totalClickManager)
         {
             _bagRepository = bagRepository;
             _bagManager = bagManager;
+            _dailyClickManager = dailyClickManager;
+            _totalClickManager = totalClickManager;
         }
+        
 
         public virtual async Task<PagedResultDto<BagDto>> GetListAsync(GetBagsInput input)
         {
@@ -50,8 +59,11 @@ namespace InstaRent.Catalog.Bags
         {
 
             var bag = await _bagManager.CreateAsync(
-            input.bag_name, input.description, input.image_urls, input.rental_start_date, input.rental_end_date, input.price, input.tags, input.status, input.renter_id 
+            input.bag_name, input.description, input.image_urls, input.rental_start_date, input.rental_end_date, input.price, input.tags, input.status, input.renter_id
             );
+             
+            await _dailyClickManager.IncreaseAsync(bag.Id);
+            await _totalClickManager.IncreaseAsync(bag.Id);
 
             return ObjectMapper.Map<Bag, BagDto>(bag);
         }

@@ -50,6 +50,7 @@ namespace InstaRent.Catalog.Bags
             bag.status = status;
             bag.renter_id = renter_id;
             bag.LastModificationTime = DateTime.Now;
+            
 
             bag.SetConcurrencyStampIfNotNull(concurrencyStamp);
             return await _bagRepository.UpdateAsync(bag);
