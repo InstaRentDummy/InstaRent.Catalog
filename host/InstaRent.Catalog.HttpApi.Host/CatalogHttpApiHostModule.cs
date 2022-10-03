@@ -1,8 +1,9 @@
-using InstaRent.Catalog.MongoDB;
 using InstaRent.Catalog.Grpc;
+using InstaRent.Catalog.MongoDB;
 using InstaRent.Catalog.MultiTenancy;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -13,13 +14,13 @@ using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 using Volo.Abp.AspNetCore.Serilog;
-using Volo.Abp.Autofac; 
+using Volo.Abp.Autofac;
 using Volo.Abp.Modularity;
-using Volo.Abp.MultiTenancy; 
+using Volo.Abp.MultiTenancy;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.Uow;
 using Volo.Abp.VirtualFileSystem;
-
+// using Volo.Abp.MongoDB;
 namespace InstaRent.Catalog;
 
 [DependsOn(
@@ -29,7 +30,7 @@ namespace InstaRent.Catalog;
     typeof(AbpAutofacModule), 
     typeof(CatalogMongoDbModule),
     typeof(AbpAspNetCoreSerilogModule),
-    typeof(AbpSwashbuckleModule)
+    typeof(AbpSwashbuckleModule) 
     )]
 public class CatalogHttpApiHostModule : AbpModule
 {
@@ -97,6 +98,8 @@ public class CatalogHttpApiHostModule : AbpModule
         {
             options.EnableDetailedErrors = true;
         });
+
+      
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
@@ -113,7 +116,7 @@ public class CatalogHttpApiHostModule : AbpModule
             app.UseHsts();
         }
 
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
         app.UseCorrelationId();
         app.UseStaticFiles();
         app.UseRouting();
