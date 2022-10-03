@@ -32,6 +32,7 @@ namespace InstaRent.Catalog.DailyClicks
                     long? clicksMax = null,
                     DateTime? lastModificationTimeMin = null,
                     DateTime? lastModificationTimeMax = null,
+                    Guid? bagId = null,
                     string sorting = null,
                     int maxResultCount = int.MaxValue,
                     int skipCount = 0,

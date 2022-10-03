@@ -69,12 +69,13 @@ namespace InstaRent.Catalog.DailyClicks
             long? clicksMax = null,
             DateTime? lastModificationTimeMin = null,
             DateTime? lastModificationTimeMax = null,
+            Guid? bagId = null,
             string sorting = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
             CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax );
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax ,bagId);
             query = query.OrderBy(string.IsNullOrWhiteSpace(sorting) ? DailyClickConsts.GetDefaultSorting(false) : sorting);
             return await query.As<IMongoQueryable<DailyClick>>()
                 .PageBy<DailyClick, IMongoQueryable<DailyClick>>(skipCount, maxResultCount)

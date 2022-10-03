@@ -53,16 +53,18 @@ namespace InstaRent.Catalog.DailyClicks
         )
         {
             var queryable = await _dailyClickRepository.GetQueryableAsync();
-            var query = queryable.Where(x => x.BagId == bagId && (x.LastModificationTime.Value>= DateTime.Now.Date));
+            var query = queryable.Where(x => x.BagId == bagId);
 
             var dailyClick = await AsyncExecuter.FirstOrDefaultAsync(query);
 
             if (dailyClick != null)
             {
                 dailyClick.BagId = bagId;
-                dailyClick.clicks = dailyClick.clicks + 1;
-                dailyClick.LastModificationTime = DateTime.Now;
-
+                if (dailyClick.LastModificationTime >= DateTime.Today)
+                    dailyClick.clicks = dailyClick.clicks + 1;
+                else
+                    dailyClick.clicks = 1;
+                dailyClick.LastModificationTime = DateTime.Today;
                 return await _dailyClickRepository.UpdateAsync(dailyClick);
             }
             else
