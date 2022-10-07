@@ -1,4 +1,3 @@
-using InstaRent.Catalog.Grpc;
 using InstaRent.Catalog.MongoDB;
 using InstaRent.Catalog.MultiTenancy;
 using Microsoft.AspNetCore.Builder;
@@ -137,9 +136,6 @@ public class CatalogHttpApiHostModule : AbpModule
         app.UseAuditing();
         app.UseUnitOfWork();
         app.UseAbpSerilogEnrichers();
-        app.UseConfiguredEndpoints(endpoints =>
-        {
-            endpoints.MapGrpcService<PublicBagGrpService>();
-        });
+        app.UseConfiguredEndpoints();
     }
 }
