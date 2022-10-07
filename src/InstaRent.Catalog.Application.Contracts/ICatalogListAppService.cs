@@ -1,6 +1,7 @@
 ﻿using InstaRent.Catalog.Bags;
 using InstaRent.Catalog.DailyClicks;
 using InstaRent.Catalog.TotalClicks;
+using InstaRent.Catalog.UserPreferences;
 using System;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
@@ -15,7 +16,7 @@ namespace InstaRent.Catalog
 
         Task<PagedResultDto<TotalClickWithNavigationPropertiesDto>> GetMostVisitedListAsync(GetTotalClicksInput input);
 
-        Task<PagedResultDto<BagDto>> GetRecommendationsAsync(string userId);
+        Task<PagedResultDto<BagDto>> GetRecommendationsAsync(GetUserRecommendationInput input);
 
         Task<string> IncreaseAsync(Guid bag_id);
     }

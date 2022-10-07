@@ -1,6 +1,7 @@
 ﻿using InstaRent.Catalog.Bags;
 using InstaRent.Catalog.DailyClicks;
 using InstaRent.Catalog.TotalClicks;
+using InstaRent.Catalog.UserPreferences;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -42,9 +43,9 @@ namespace InstaRent.Catalog
         //GetRecommendationList
         [HttpGet]
         [Route("recommendations/{userId}")]
-        public Task<PagedResultDto<BagDto>> GetRecommendationsAsync(string userId)
+        public Task<PagedResultDto<BagDto>> GetRecommendationsAsync(GetUserRecommendationInput input)
         {
-            return _catalogListAppService.GetRecommendationsAsync(userId);
+            return _catalogListAppService.GetRecommendationsAsync(input);
         }
 
         [HttpPost]

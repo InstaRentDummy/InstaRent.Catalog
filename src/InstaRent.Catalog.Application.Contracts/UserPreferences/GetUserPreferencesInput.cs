@@ -13,7 +13,7 @@ namespace InstaRent.Catalog.UserPreferences
         public string UserId { get; set; }
 
         [JsonPropertyName("tags")]
-        public List<TagDto> Tags { get; set; }
+        public string Tags { get; set; }
 
         [JsonPropertyName("avg_rating_min")]
         public double? AvgRatingMin { get; set; }

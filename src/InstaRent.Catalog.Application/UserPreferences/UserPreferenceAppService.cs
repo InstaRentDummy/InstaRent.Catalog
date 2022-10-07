@@ -22,12 +22,8 @@ namespace InstaRent.Catalog.UserPreferences
 
         public virtual async Task<PagedResultDto<UserPreferenceDto>> GetListAsync(GetUserPreferencesInput input)
         {
-            var inputTag = string.Empty;
-            if (input.Tags != null)
-                inputTag = input.Tags[0].tagname;
-
-            var totalCount = await _userPreferenceRepository.GetCountAsync(input.FilterText, input.UserId, inputTag, input.AvgRatingMin, input.AvgRatingMax, input.TotalNumofRatingMin, input.TotalNumofRatingMax);
-            var items = await _userPreferenceRepository.GetListAsync(input.FilterText, input.UserId, inputTag, input.AvgRatingMin, input.AvgRatingMax, input.TotalNumofRatingMin,input.TotalNumofRatingMax, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var totalCount = await _userPreferenceRepository.GetCountAsync(input.FilterText, input.UserId, input.Tags, input.AvgRatingMin, input.AvgRatingMax, input.TotalNumofRatingMin, input.TotalNumofRatingMax);
+            var items = await _userPreferenceRepository.GetListAsync(input.FilterText, input.UserId, input.Tags, input.AvgRatingMin, input.AvgRatingMax, input.TotalNumofRatingMin, input.TotalNumofRatingMax, input.Sorting, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<UserPreferenceDto>
             {

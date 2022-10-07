@@ -11,10 +11,6 @@ namespace InstaRent.Catalog.UserPreferences
     {
         Task<List<Bag>> GetListWithNavigationPropertiesAsync(
            string userId = null,
-            double? avgRatingMin = null,
-            double? avgRatingMax = null,
-            double? totalNumofRatingMin = null,
-            double? totalNumofRatingMax = null,
             int maxResultCount = int.MaxValue,
             int skipCount = 0,
             CancellationToken cancellationToken = default

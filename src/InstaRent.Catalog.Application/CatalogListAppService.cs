@@ -19,7 +19,8 @@ namespace InstaRent.Catalog
         private readonly TotalClickManager _totalClickManager;
 
         public CatalogListAppService(IDailyClickRepository dailyClickRepository, DailyClickManager dailyClickManager, IUserPreferenceRepository userPreferenceRepository, ITotalClickRepository totalClickRepository, TotalClickManager totalClickManager)
-        { _dailyClickRepository = dailyClickRepository;
+        {
+            _dailyClickRepository = dailyClickRepository;
             _userPreferenceRepository = userPreferenceRepository;
             _totalClickRepository = totalClickRepository;
             _dailyClickManager = dailyClickManager;
@@ -58,16 +59,20 @@ namespace InstaRent.Catalog
             };
         }
 
-        public virtual async Task<PagedResultDto<BagDto>> GetRecommendationsAsync(string userId)
+        public virtual async Task<PagedResultDto<BagDto>> GetRecommendationsAsync(GetUserRecommendationInput input)
         {
-            GetUserPreferencesInput input = new GetUserPreferencesInput()
-            {
-                UserId = userId
-            };
+             
 
             var totalCount = await _userPreferenceRepository.GetCountAsync(input.UserId);
-            var items = await _userPreferenceRepository.GetListWithNavigationPropertiesAsync(input.UserId);
-            //var testitems = ObjectMapper.Map<List<UserPreferenceWithNavigationProperties>, List<UserPreferenceWithNavigationPropertiesDto>>(items);
+            if (totalCount == 0)
+            {
+                return new PagedResultDto<BagDto>
+                {
+                    TotalCount = totalCount
+
+                };
+            }
+            var items = await _userPreferenceRepository.GetListWithNavigationPropertiesAsync( input.UserId, input.MaxResultCount,input.SkipCount);
 
             var response = new PagedResultDto<BagDto>
             {
@@ -78,10 +83,10 @@ namespace InstaRent.Catalog
             return response;
         }
 
-        public virtual async Task<string>  IncreaseAsync(Guid bag_id)
+        public virtual async Task<string> IncreaseAsync(Guid bag_id)
         {
-            var dailyclick=  await _dailyClickManager.IncreaseAsync(bag_id);
-            var totalclick=  await _totalClickManager.IncreaseAsync(bag_id);
+            var dailyclick = await _dailyClickManager.IncreaseAsync(bag_id);
+            var totalclick = await _totalClickManager.IncreaseAsync(bag_id);
             return "{ \"dailyclicks\" : " + dailyclick.clicks.ToString() + ", \"totalclicks\": " + totalclick.clicks.ToString() + "}";
 
         }
