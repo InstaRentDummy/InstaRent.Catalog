@@ -2,7 +2,6 @@ using InstaRent.Catalog.MongoDB;
 using InstaRent.Catalog.MultiTenancy;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -93,10 +92,7 @@ public class CatalogHttpApiHostModule : AbpModule
         });
 
         Configure<AbpAntiForgeryOptions>(options => { options.AutoValidate = false; });
-        context.Services.AddGrpc(options =>
-        {
-            options.EnableDetailedErrors = true;
-        });
+         
 
       
     }
