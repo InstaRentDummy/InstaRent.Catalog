@@ -19,6 +19,9 @@ namespace InstaRent.Catalog.Bags
         public List<string> tags { get; set; }
         public string status { get; set; }
         public string renter_id { get; set; }
+        public double? AvgRating { get; set; }
+        public double? TotalRating { get; set; }
+        public int? TotalNumofRating { get; set; }
         [JsonIgnore]
         public string ConcurrencyStamp { get; set; }
         [JsonPropertyName("creation_time")]

@@ -112,7 +112,20 @@ namespace InstaRent.Catalog
             result.status.ShouldBe("available");
             result.renter_id.ShouldBe("renter_1@gmail.com");
         }
+        [Fact]
+        public async Task RateAsync()
+        {
+            // Act
+            await _bagsAppService.RateAsync(Guid.Parse("4a2d4f7e-c8ee-4495-984b-3eda432a7765"),4.0);
 
+            // Assert
+            var result = await _bagRepository.FindAsync(c => c.Id == Guid.Parse("4a2d4f7e-c8ee-4495-984b-3eda432a7765"));
+
+            result.AvgRating = 4.0;
+            result.TotalRating = 4.0;
+            result.TotalNumofRating = 1;
+             
+        }
         [Fact]
         public async Task DeleteAsync()
         {

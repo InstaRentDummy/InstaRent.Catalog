@@ -34,6 +34,12 @@ namespace InstaRent.Catalog.Bags
             string tags = null,
             string status = null,
             string renter_id = null,
+            double? avgRatingMin = null,
+            double? avgRatingMax = null,
+            double? totalRatingMin = null,
+            double? totalRatingMax = null,
+            int? totalNumofRatingMin = null,
+            int? totalNumofRatingMax = null,
             bool? isdeleted = null,
             DateTime? creation_timeMin = null,
             DateTime? creation_timeMax = null,
@@ -42,7 +48,7 @@ namespace InstaRent.Catalog.Bags
             int skipCount = 0,
             CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax, priceMin, priceMax, tags, status, renter_id, isdeleted);
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax, priceMin, priceMax, tags, status, renter_id, avgRatingMin, avgRatingMax,totalRatingMin,totalRatingMax, totalNumofRatingMin, totalNumofRatingMax, isdeleted);
             query = query.OrderBy(string.IsNullOrWhiteSpace(sorting) ? BagConsts.GetDefaultSorting(false) : sorting);
             return await query.As<IMongoQueryable<Bag>>()
                 .PageBy<Bag, IMongoQueryable<Bag>>(skipCount, maxResultCount)
@@ -63,12 +69,18 @@ namespace InstaRent.Catalog.Bags
            string tags = null,
            string status = null,
            string renter_id = null,
+            double? avgRatingMin = null,
+            double? avgRatingMax = null,
+            double? totalRatingMin = null,
+            double? totalRatingMax = null,
+            int? totalNumofRatingMin = null,
+            int? totalNumofRatingMax = null,
            bool? isdeleted = null,
            DateTime? creation_timeMin = null,
            DateTime? creation_timeMax = null,
            CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax, priceMin, priceMax, tags, status, renter_id, isdeleted);
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, bag_name, description, image_urls, rental_start_dateMin, rental_start_dateMax, rental_end_dateMin, rental_end_dateMax, priceMin, priceMax, tags, status, renter_id, avgRatingMin, avgRatingMax, totalRatingMin, totalRatingMax, totalNumofRatingMin, totalNumofRatingMax, isdeleted);
             return await query.As<IMongoQueryable<Bag>>().LongCountAsync(GetCancellationToken(cancellationToken));
         }
 
@@ -87,6 +99,12 @@ namespace InstaRent.Catalog.Bags
             string tags = null,
             string status = null,
             string renter_id = null,
+            double? avgRatingMin = null,
+            double? avgRatingMax = null,
+            double? totalRatingMin = null,
+            double? totalRatingMax = null,
+            int? totalNumofRatingMin = null,
+            int? totalNumofRatingMax = null,
             bool? isdeleted = null,
             DateTime? creation_timeMin = null,
             DateTime? creation_timeMax = null
@@ -108,7 +126,14 @@ namespace InstaRent.Catalog.Bags
                     .WhereIf(!string.IsNullOrWhiteSpace(renter_id), e => e.renter_id.ToLower().Contains(renter_id.ToLower()))
                     .WhereIf(isdeleted.HasValue, e => e.isdeleted.Equals(isdeleted.Value))
                     .WhereIf(creation_timeMin.HasValue, e => e.CreationTime >= creation_timeMin.Value)
-                    .WhereIf(creation_timeMax.HasValue, e => e.CreationTime <= creation_timeMax.Value);
+                    .WhereIf(creation_timeMax.HasValue, e => e.CreationTime <= creation_timeMax.Value)
+                    .WhereIf(avgRatingMin.HasValue, e => e.AvgRating >= avgRatingMin.Value)
+                    .WhereIf(avgRatingMax.HasValue, e => e.AvgRating <= avgRatingMax.Value)
+                    .WhereIf(totalRatingMin.HasValue, e => e.TotalRating >= totalRatingMin.Value)
+                    .WhereIf(totalRatingMax.HasValue, e => e.TotalRating <= totalRatingMax.Value)
+                    .WhereIf(totalNumofRatingMin.HasValue, e => e.TotalNumofRating >= totalNumofRatingMin.Value)
+                    .WhereIf(totalNumofRatingMax.HasValue, e => e.TotalNumofRating <= totalNumofRatingMax.Value);
+            ;
         }
     }
 }

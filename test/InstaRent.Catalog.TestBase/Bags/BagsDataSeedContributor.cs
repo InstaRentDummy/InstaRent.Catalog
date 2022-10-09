@@ -39,9 +39,12 @@ namespace InstaRent.Catalog.Bags
                 tags: new List<string>() { "Wallet" },
                 status: "available",
                 renter_id: "renter_1@gmail.com",
+                avgRating: 0,
+                totalRating: 0,
+                totalNumofRating: 0,
                 isdeleted: false
-                 
-            )); 
+
+            )) ; 
 
             await _bagRepository.InsertAsync(new Bag
             (
@@ -55,6 +58,9 @@ namespace InstaRent.Catalog.Bags
                 tags: new List<string>() { "Crossbody" },
                 status: "available",
                 renter_id: "renter_2@gmail.com",
+                avgRating: 0,
+                totalRating:0,
+                totalNumofRating: 0,
                 isdeleted: false 
             ));
 

@@ -21,5 +21,8 @@ namespace InstaRent.Catalog.Bags
         public string status { get; set; }
         [Required]
         public string renter_id { get; set; }
+        public double? AvgRating { get; set; }
+        public double? TotalRating  { get; set; }
+        public int? TotalNumofRating { get; set; }
     }
 }

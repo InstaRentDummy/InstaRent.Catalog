@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp;
+using InstaRent.Catalog.DailyClicks;
 
 namespace InstaRent.Catalog.Bags
 {
@@ -55,6 +56,13 @@ namespace InstaRent.Catalog.Bags
         public virtual Task DeleteAsync(Guid id)
         {
             return _bagsAppService.DeleteAsync(id);
+        }
+
+        [HttpPost]
+        [Route("rate")]
+        public virtual Task<BagDto> RateAsync(Guid bag_id, double rating)
+        {
+            return _bagsAppService.RateAsync(bag_id, rating);
         }
     }
 }

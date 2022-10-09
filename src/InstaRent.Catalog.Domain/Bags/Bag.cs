@@ -33,7 +33,15 @@ namespace InstaRent.Catalog.Bags
 
         [NotNull]
         public virtual string renter_id { get; set; }
-         
+
+        [CanBeNull]
+        public virtual double? AvgRating { get; set; }
+
+        [CanBeNull]
+        public virtual double? TotalRating { get; set; }
+
+        [CanBeNull]
+        public virtual int? TotalNumofRating { get; set; }
 
         [CanBeNull]
         public virtual DateTime? LastModificationTime { get; set; }
@@ -50,7 +58,7 @@ namespace InstaRent.Catalog.Bags
 
         }
 
-        public Bag(Guid id, string bag_name, string description, List<string> image_urls, DateTime rental_start_date, DateTime rental_end_date,double price, List<string> tags, string status, string renter_id, bool isdeleted=false)
+        public Bag(Guid id, string bag_name, string description, List<string> image_urls, DateTime rental_start_date, DateTime rental_end_date,double price, List<string> tags, string status, string renter_id, double? avgRating, double? totalRating, int? totalNumofRating, bool isdeleted=false)
         {
             ConcurrencyStamp = Guid.NewGuid().ToString("N");
             Id = id;
@@ -68,6 +76,9 @@ namespace InstaRent.Catalog.Bags
             this.tags = tags;
             this.status = status;
             this.renter_id = renter_id;
+            this.AvgRating = avgRating;
+            this.TotalRating = totalRating;
+            this.TotalNumofRating = totalNumofRating;
             this.isdeleted = isdeleted;
             this.LastModificationTime = DateTime.Now;
             this.CreationTime = DateTime.Now;
