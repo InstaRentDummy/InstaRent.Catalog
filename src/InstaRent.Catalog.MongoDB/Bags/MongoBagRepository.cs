@@ -93,9 +93,9 @@ namespace InstaRent.Catalog.Bags
             )
         {
             return query
-                .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.bag_name.Contains(filterText) || e.description.Contains(filterText) || e.image_urls.Any(i => i.Contains(filterText)) || e.tags.Any(t => t.Contains(filterText)) || e.status.Contains(filterText) || e.renter_id.Contains(filterText))
-                    .WhereIf(!string.IsNullOrWhiteSpace(bag_name), e => e.bag_name.Contains(bag_name))
-                    .WhereIf(!string.IsNullOrWhiteSpace(description), e => e.description.Contains(description))
+                .WhereIf(!string.IsNullOrWhiteSpace(filterText), e => e.bag_name.ToLower().Contains(filterText.ToLower()) || e.description.ToLower().Contains(filterText.ToLower()) || e.image_urls.Any(i => i.Contains(filterText)) || e.tags.Any(t => t.ToLower().Contains(filterText.ToLower())) || e.status.Contains(filterText) || e.renter_id.ToLower().Contains(filterText.ToLower()))
+                    .WhereIf(!string.IsNullOrWhiteSpace(bag_name), e => e.bag_name.ToLower().Contains(bag_name.ToLower()))
+                    .WhereIf(!string.IsNullOrWhiteSpace(description), e => e.description.ToLower().Contains(description.ToLower()))
                     .WhereIf(!string.IsNullOrWhiteSpace(image_urls), e => e.image_urls.Any(i => i.Contains(image_urls)))
                     .WhereIf(rental_start_dateMin.HasValue, e => e.rental_start_date >= rental_start_dateMin.Value)
                     .WhereIf(rental_start_dateMax.HasValue, e => e.rental_start_date <= rental_start_dateMax.Value)
@@ -103,9 +103,9 @@ namespace InstaRent.Catalog.Bags
                     .WhereIf(rental_end_dateMax.HasValue, e => e.rental_end_date <= rental_end_dateMax.Value)
                     .WhereIf(priceMin.HasValue, e => e.price >= priceMin.Value)
                     .WhereIf(priceMax.HasValue, e => e.price <= priceMax.Value)
-                    .WhereIf(!string.IsNullOrWhiteSpace(tags), e => e.tags.Any(t => t.Contains(tags)))
-                    .WhereIf(!string.IsNullOrWhiteSpace(status), e => e.status.Contains(status))
-                    .WhereIf(!string.IsNullOrWhiteSpace(renter_id), e => e.renter_id.Contains(renter_id))
+                    .WhereIf(!string.IsNullOrWhiteSpace(tags), e => e.tags.Any(t => t.ToLower().Contains(tags.ToLower())))
+                    .WhereIf(!string.IsNullOrWhiteSpace(status), e => e.status.ToLower().Contains(status.ToLower()))
+                    .WhereIf(!string.IsNullOrWhiteSpace(renter_id), e => e.renter_id.ToLower().Contains(renter_id.ToLower()))
                     .WhereIf(isdeleted.HasValue, e => e.isdeleted.Equals(isdeleted.Value))
                     .WhereIf(creation_timeMin.HasValue, e => e.CreationTime >= creation_timeMin.Value)
                     .WhereIf(creation_timeMax.HasValue, e => e.CreationTime <= creation_timeMax.Value);
