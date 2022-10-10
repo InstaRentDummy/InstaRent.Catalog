@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "instarentaks-bee3"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "instarentaks-bee3"
+  template:
+    metadata:
+      labels:
+        app: "instarentaks-bee3"
+    spec:
+      containers:
+        - name: "instarentaks-bee3"
+          image: "instarent.azurecr.io/instarentaks"
+          ports:
+          - containerPort: 80
