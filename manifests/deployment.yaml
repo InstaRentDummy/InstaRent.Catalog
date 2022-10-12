@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: catalogservice
-        image: instarent.azurecr.io/instarent-catalog:latest
+        image: instarent.azurecr.io/instarentcatalog:latest
         ports:
         - containerPort: 80
         - containerPort: 443
