@@ -1,14 +1,7 @@
-﻿using AutoMapper.Internal.Mappers;
-using InstaRent.Catalog.DailyClicks;
-using InstaRent.Catalog.Permissions;
+﻿using InstaRent.Catalog.DailyClicks;
 using InstaRent.Catalog.TotalClicks;
-using InstaRent.Catalog.UserPreferences;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -69,7 +62,7 @@ namespace InstaRent.Catalog.Bags
 
             var bag = await _bagManager.CreateAsync(
             input.bag_name, input.description, input.image_urls, input.rental_start_date, input.rental_end_date, input.price, input.tags, input.status, input.renter_id
-            , input.AvgRating,input.TotalRating , input.TotalNumofRating);
+            , input.AvgRating, input.TotalRating, input.TotalNumofRating);
 
             await _dailyClickManager.IncreaseAsync(bag.Id);
             await _totalClickManager.IncreaseAsync(bag.Id);
@@ -83,19 +76,19 @@ namespace InstaRent.Catalog.Bags
             var bag = await _bagManager.UpdateAsync(
             id,
             input.bag_name, input.description, input.image_urls, input.rental_start_date, input.rental_end_date, input.price, input.tags, input.status, input.renter_id
-            , input.AvgRating,input.TotalRating, input.TotalNumofRating, input.ConcurrencyStamp
+            , input.AvgRating, input.TotalRating, input.TotalNumofRating, input.ConcurrencyStamp
             );
 
             return ObjectMapper.Map<Bag, BagDto>(bag);
         }
 
-        public virtual async Task<BagDto> RateAsync(Guid id, double rating)
+        public virtual async Task<BagDto> RateAsync(BagRatingDto input)
         {
-            var bag = await _bagManager.RateAsync(id, rating);
+            var bag = await _bagManager.RateAsync(input.BagId, input.Rating);
             return ObjectMapper.Map<Bag, BagDto>(bag);
 
 
         }
     }
 }
- 
+

@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
@@ -18,6 +17,6 @@ namespace InstaRent.Catalog.Bags
 
         Task<BagDto> UpdateAsync(Guid id, BagUpdateDto input);
 
-        Task<BagDto> RateAsync(Guid id, double rating);
+        Task<BagDto> RateAsync(BagRatingDto input);
     }
 }
