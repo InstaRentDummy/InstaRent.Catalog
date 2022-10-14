@@ -116,7 +116,7 @@ namespace InstaRent.Catalog
         public async Task RateAsync()
         {
             // Act
-            await _bagsAppService.RateAsync(Guid.Parse("4a2d4f7e-c8ee-4495-984b-3eda432a7765"),4.0);
+            await _bagsAppService.RateAsync(new BagRatingDto() { BagId = Guid.Parse("4a2d4f7e-c8ee-4495-984b-3eda432a7765"), Rating = 4.0 });
 
             // Assert
             var result = await _bagRepository.FindAsync(c => c.Id == Guid.Parse("4a2d4f7e-c8ee-4495-984b-3eda432a7765"));
