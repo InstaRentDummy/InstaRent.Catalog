@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.AspNetCore.Mvc;
-using Volo.Abp;
-using InstaRent.Catalog.DailyClicks;
 
 namespace InstaRent.Catalog.Bags
 {
@@ -60,9 +55,9 @@ namespace InstaRent.Catalog.Bags
 
         [HttpPost]
         [Route("rate")]
-        public virtual Task<BagDto> RateAsync(Guid bag_id, double rating)
+        public virtual Task<BagDto> RateAsync(BagRatingDto input)
         {
-            return _bagsAppService.RateAsync(bag_id, rating);
+            return _bagsAppService.RateAsync(input);
         }
     }
 }
