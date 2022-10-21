@@ -9,6 +9,8 @@ using Volo.Abp.Domain.Repositories.MongoDB;
 using Volo.Abp.MongoDB;
 using MongoDB.Driver.Linq;
 using MongoDB.Driver;
+using InstaRent.Catalog.Bags;
+using InstaRent.Catalog.UserPreferences;
 
 namespace InstaRent.Catalog.DailyClicks
 {
@@ -46,11 +48,11 @@ namespace InstaRent.Catalog.DailyClicks
             int skipCount = 0,
             CancellationToken cancellationToken = default)
         {
+            filterText = filterText ?? "".ToLower();
             var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
             var dailyClicks = await query.OrderBy(string.IsNullOrWhiteSpace(sorting) ? DailyClickConsts.GetDefaultSorting(false) : sorting.Split('.').Last())
                 .As<IMongoQueryable<DailyClick>>()
-                .PageBy<DailyClick, IMongoQueryable<DailyClick>>(skipCount, maxResultCount)
-                .ToListAsync(GetCancellationToken(cancellationToken));
+            .ToListAsync(GetCancellationToken(cancellationToken));
 
             var dbContext = await GetDbContextAsync(cancellationToken);
             return dailyClicks.Select(s => new DailyClickWithNavigationProperties
@@ -59,7 +61,14 @@ namespace InstaRent.Catalog.DailyClicks
                 Bag = dbContext.Bags.AsQueryable()
                 .FirstOrDefault(e => e.Id == s.BagId ),
             }).Where(b => b.Bag.isdeleted.Equals(false))
-            .WhereIf(!string.IsNullOrWhiteSpace(filterText), b => b.Bag.bag_name.Contains(filterText) || b.Bag.description.Contains(filterText) || b.Bag.image_urls.Any(i => i.Contains(filterText)) || b.Bag.tags.Any(t => t.Contains(filterText)) || b.Bag.status.Contains(filterText) || b.Bag.renter_id.Contains(filterText))
+            .WhereIf(!string.IsNullOrWhiteSpace(filterText),
+              b => b.Bag.bag_name.ToString().ToLower().Contains(filterText.ToLower())
+              || b.Bag.description.ToString().ToLower().Contains(filterText.ToLower())
+              || b.Bag.tags.Any(t => t.ToString().ToLower().Contains(filterText.ToLower()))
+              || b.Bag.status.ToString().ToLower().Contains(filterText.ToLower())
+              || b.Bag.renter_id.ToString().ToLower().Contains(filterText.ToLower()))
+            .Skip(skipCount)
+            .Take(maxResultCount)             
             .ToList();
         }
 
@@ -104,8 +113,10 @@ namespace InstaRent.Catalog.DailyClicks
            Guid? bagId = null,
            CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
+            
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), null, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
 
+            
             var dailyClicks = await query.As<IMongoQueryable<DailyClick>>().ToListAsync(GetCancellationToken(cancellationToken));
 
             var dbContext = await GetDbContextAsync(cancellationToken);
@@ -116,8 +127,12 @@ namespace InstaRent.Catalog.DailyClicks
                 .FirstOrDefault(e => e.Id == s.BagId)
 
             }).Where(b => b.Bag.isdeleted.Equals(false))
-              .WhereIf(!string.IsNullOrWhiteSpace(filterText), b => b.Bag.bag_name.Contains(filterText) || b.Bag.description.Contains(filterText) || b.Bag.image_urls.Any(i => i.Contains(filterText)) || b.Bag.tags.Any(t => t.Contains(filterText)) || b.Bag.status.Contains(filterText) || b.Bag.renter_id.Contains(filterText))
-
+              .WhereIf(!string.IsNullOrWhiteSpace(filterText),
+              b => b.Bag.bag_name.ToString().ToLower().Contains(filterText.ToLower()) 
+              || b.Bag.description.ToString().ToLower().Contains(filterText.ToLower()) 
+              || b.Bag.tags.Any(t => t.ToString().ToLower().Contains(filterText.ToLower())) 
+              || b.Bag.status.ToString().ToLower().Contains(filterText.ToLower()) 
+              || b.Bag.renter_id.ToString().ToLower().Contains(filterText.ToLower()))
             .LongCount();
         }
 

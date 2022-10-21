@@ -47,7 +47,8 @@ namespace InstaRent.Catalog.TotalClicks
             int skipCount = 0,
             CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
+             
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), null, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
             var totalClicks = await query.OrderBy(string.IsNullOrWhiteSpace(sorting) ? TotalClickConsts.GetDefaultSorting(false) : sorting.Split('.').Last())
                 .As<IMongoQueryable<TotalClick>>()
                 .PageBy<TotalClick, IMongoQueryable<TotalClick>>(skipCount, maxResultCount)
@@ -60,7 +61,14 @@ namespace InstaRent.Catalog.TotalClicks
                 Bag = dbContext.Bags.AsQueryable().FirstOrDefault(e => e.Id == s.BagId),
 
             }).Where(b => b.Bag.isdeleted.Equals(false))
-            .WhereIf(!string.IsNullOrWhiteSpace(filterText), b => b.Bag.bag_name.Contains(filterText) || b.Bag.description.Contains(filterText) || b.Bag.image_urls.Any(i => i.Contains(filterText)) || b.Bag.tags.Any(t => t.Contains(filterText)) || b.Bag.status.Contains(filterText) || b.Bag.renter_id.Contains(filterText))
+            .WhereIf(!string.IsNullOrWhiteSpace(filterText), 
+                 b => b.Bag.bag_name.ToString().ToLower().Contains(filterText.ToLower())
+              || b.Bag.description.ToString().ToLower().Contains(filterText.ToLower())
+              || b.Bag.tags.Any(t => t.ToString().ToLower().Contains(filterText.ToLower()))
+              || b.Bag.status.ToString().ToLower().Contains(filterText.ToLower())
+              || b.Bag.renter_id.ToString().ToLower().Contains(filterText.ToLower()))
+            .Skip(skipCount)
+            .Take(maxResultCount)
             .ToList();
         }
 
@@ -73,7 +81,7 @@ namespace InstaRent.Catalog.TotalClicks
            Guid? bagId = null,
            CancellationToken cancellationToken = default)
         {
-            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), filterText, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
+            var query = ApplyFilter((await GetMongoQueryableAsync(cancellationToken)), null, clicksMin, clicksMax, lastModificationTimeMin, lastModificationTimeMax, bagId);
 
             var totalClicks = await query.As<IMongoQueryable<TotalClick>>().ToListAsync(GetCancellationToken(cancellationToken));
 
@@ -85,8 +93,12 @@ namespace InstaRent.Catalog.TotalClicks
                 .FirstOrDefault(e => e.Id == s.BagId)
 
             }).Where(b => b.Bag.isdeleted.Equals(false))
-              .WhereIf(!string.IsNullOrWhiteSpace(filterText), b => b.Bag.bag_name.Contains(filterText) || b.Bag.description.Contains(filterText) || b.Bag.image_urls.Any(i => i.Contains(filterText)) || b.Bag.tags.Any(t => t.Contains(filterText)) || b.Bag.status.Contains(filterText) || b.Bag.renter_id.Contains(filterText))
-
+              .WhereIf(!string.IsNullOrWhiteSpace(filterText),
+               b => b.Bag.bag_name.ToString().ToLower().Contains(filterText.ToLower())
+              || b.Bag.description.ToString().ToLower().Contains(filterText.ToLower())
+              || b.Bag.tags.Any(t => t.ToString().ToLower().Contains(filterText.ToLower()))
+              || b.Bag.status.ToString().ToLower().Contains(filterText.ToLower())
+              || b.Bag.renter_id.ToString().ToLower().Contains(filterText.ToLower()))
             .LongCount();
         }
 
