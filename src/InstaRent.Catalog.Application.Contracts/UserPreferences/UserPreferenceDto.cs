@@ -16,11 +16,6 @@ namespace InstaRent.Catalog.UserPreferences
         [JsonPropertyName("tags")]
         public List<TagDto> Tags { get; set; }
 
-        [JsonPropertyName("avg_rating")]
-        public double? AvgRating { get; set; }
-
-        [JsonPropertyName("total_num_of_rating")]
-        public  double? TotalNumofRating { get; set; }
         [JsonIgnore]
         public string ConcurrencyStamp { get; set; }
     }

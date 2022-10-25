@@ -31,18 +31,14 @@ namespace InstaRent.Catalog.UserPreferences
             (
                 id: Guid.Parse("6d2bffa7-5afe-44bb-91ca-464daa3ff5ea"),
                 userId: "renter12@gmail.com",
-                tags: new List<Tag>() { new Tag("Tote", 10) },
-                avgRating: 10,
-                totalNumofRating: 100
+                tags: new List<Tag>() { new Tag("Tote", 10) }
             )); ;
 
             await _userPreferenceRepository.InsertAsync(new UserPreference
             (
                  id: Guid.Parse("8a537d6a-3142-49fd-86b8-5230cfcb4d62"),
-                userId: "renter34@gmail.com",
-                 tags: new List<Tag>() { new Tag("Wallet", 5) },
-                 avgRating: 5,
-                totalNumofRating: 500
+                 userId: "renter34@gmail.com",
+                 tags: new List<Tag>() { new Tag("Wallet", 5) }
             ));
 
             await _unitOfWorkManager.Current.SaveChangesAsync();

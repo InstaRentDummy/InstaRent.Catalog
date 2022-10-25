@@ -16,5 +16,7 @@ namespace InstaRent.Catalog.UserPreferences
         Task<UserPreferenceDto> CreateAsync(UserPreferenceCreateDto input);
 
         Task<UserPreferenceDto> UpdateAsync(Guid id, UserPreferenceUpdateDto input);
+
+        Task<UserPreferenceDto> UpdateSearchTagAsync(UserPreferenceTagUpdateDto input);
     }
 }

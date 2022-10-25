@@ -15,17 +15,6 @@ namespace InstaRent.Catalog.UserPreferences
         [JsonPropertyName("tags")]
         public string Tags { get; set; }
 
-        [JsonPropertyName("avg_rating_min")]
-        public double? AvgRatingMin { get; set; }
-
-        [JsonPropertyName("avg_rating_max")]
-        public double? AvgRatingMax { get; set; }
-
-        [JsonPropertyName("total_num_of_rating_min")]
-        public double? TotalNumofRatingMin { get; set; }
-
-        [JsonPropertyName("total_num_of_rating_max")]
-        public double? TotalNumofRatingMax { get; set; }
 
         public GetUserPreferencesInput()
         {

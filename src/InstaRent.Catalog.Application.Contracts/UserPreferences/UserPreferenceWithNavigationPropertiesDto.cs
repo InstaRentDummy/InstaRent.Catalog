@@ -12,10 +12,5 @@ namespace InstaRent.Catalog.UserPreferences
         [JsonPropertyName("bags")]
         public List<BagDto> Bags { get; set; }
 
-        [JsonPropertyName("avg_rating")]
-        public double? AvgRating { get; set; }
-
-        [JsonPropertyName("total_num_of_rating")]
-        public double? TotalNumofRating { get; set; }
     }
 }

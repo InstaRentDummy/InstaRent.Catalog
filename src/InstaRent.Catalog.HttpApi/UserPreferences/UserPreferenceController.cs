@@ -1,3 +1,4 @@
+using InstaRent.Catalog.TotalClicks;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace InstaRent.Catalog.UserPreferences
     [RemoteService(Name = "Catalog")]
     [Area("catalog")]
     [ControllerName("UserPreference")]
-    [Route("api/catalog/user-preferences")]
+    [Route("api/catalog/userpreferences")]
     public class UserPreferenceController : AbpController, IUserPreferencesAppService
     {
         private readonly IUserPreferencesAppService _userPreferencesAppService;
@@ -51,6 +52,13 @@ namespace InstaRent.Catalog.UserPreferences
         public virtual Task DeleteAsync(Guid id)
         {
             return _userPreferencesAppService.DeleteAsync(id);
+        }
+
+        [HttpPost]
+        [Route("updatetag")]
+        public virtual Task<UserPreferenceDto> UpdateSearchTagAsync(UserPreferenceTagUpdateDto input)
+        {
+            return _userPreferencesAppService.UpdateSearchTagAsync(input);
         }
     }
 }

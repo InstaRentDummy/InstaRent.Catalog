@@ -1,4 +1,5 @@
 using AutoMapper.Internal.Mappers;
+using InstaRent.Catalog.TotalClicks;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,8 +23,8 @@ namespace InstaRent.Catalog.UserPreferences
 
         public virtual async Task<PagedResultDto<UserPreferenceDto>> GetListAsync(GetUserPreferencesInput input)
         {
-            var totalCount = await _userPreferenceRepository.GetCountAsync(input.FilterText, input.UserId, input.Tags, input.AvgRatingMin, input.AvgRatingMax, input.TotalNumofRatingMin, input.TotalNumofRatingMax);
-            var items = await _userPreferenceRepository.GetListAsync(input.FilterText, input.UserId, input.Tags, input.AvgRatingMin, input.AvgRatingMax, input.TotalNumofRatingMin, input.TotalNumofRatingMax, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var totalCount = await _userPreferenceRepository.GetCountAsync(input.FilterText, input.UserId, input.Tags);
+            var items = await _userPreferenceRepository.GetListAsync(input.FilterText, input.UserId, input.Tags, input.Sorting, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<UserPreferenceDto>
             {
@@ -46,8 +47,7 @@ namespace InstaRent.Catalog.UserPreferences
         {
 
             var userPreference = await _userPreferenceManager.CreateAsync(
-            input.UserId, ObjectMapper.Map<List<TagDto>, List<Tag>>(input.Tags), input.AvgRating, input.TotalNumofRating
-            );
+            input.UserId, ObjectMapper.Map<List<TagDto>, List<Tag>>(input.Tags));
 
             return ObjectMapper.Map<UserPreference, UserPreferenceDto>(userPreference);
         }
@@ -59,10 +59,18 @@ namespace InstaRent.Catalog.UserPreferences
 
            var userPreference = await _userPreferenceManager.UpdateAsync(
             id,
-            input.UserId, ObjectMapper.Map<List<TagDto>, List<Tag>>(input.Tags), input.AvgRating, input.TotalNumofRating, input.ConcurrencyStamp
+            input.UserId, ObjectMapper.Map<List<TagDto>, List<Tag>>(input.Tags),input.ConcurrencyStamp
             );
 
             return ObjectMapper.Map<UserPreference, UserPreferenceDto>(userPreference);
         }
+
+        public virtual async Task<UserPreferenceDto> UpdateSearchTagAsync(UserPreferenceTagUpdateDto input)
+        {
+            var userPreference = await _userPreferenceManager.UpdateSearchTagAsync(input.UserId,input.Tags,input.ConcurrencyStamp);
+            return ObjectMapper.Map<UserPreference, UserPreferenceDto>(userPreference);
+        }
+
+
     }
 }

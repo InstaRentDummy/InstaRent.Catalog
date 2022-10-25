@@ -5,17 +5,14 @@ using Volo.Abp.Domain.Entities;
 
 namespace InstaRent.Catalog.UserPreferences
 {
-    public class UserPreferenceUpdateDto : IHasConcurrencyStamp
+    public class UserPreferenceTagUpdateDto : IHasConcurrencyStamp
     {
         [EmailAddress]
         [StringLength(UserPreferenceConsts.UserIdMaxLength)]
-        [JsonPropertyName("userID")]
         public string UserId { get; set; }
 
-        [JsonPropertyName("tags")]
-        public List<TagDto> Tags { get; set; }
+        public List<string> Tags { get; set; }
 
-        [JsonIgnore]
         public string ConcurrencyStamp { get; set; }
     }
 }

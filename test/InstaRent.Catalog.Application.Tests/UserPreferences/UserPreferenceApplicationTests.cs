@@ -87,6 +87,28 @@ namespace InstaRent.Catalog.UserPreferences
         }
 
         [Fact]
+        public async Task UpdateSearchTagAsync()
+        {
+            // Arrange
+            var input = new UserPreferenceTagUpdateDto()
+            {
+                UserId = "renter34@gmail.com",
+                Tags = new System.Collections.Generic.List<String> { "New Tag" }
+            };
+
+            // Act
+            var serviceResult = await _userPreferencesAppService.UpdateSearchTagAsync(input);
+
+            // Assert
+            var result = await _userPreferenceRepository.FindAsync(c => c.Id == serviceResult.Id);
+
+            result.ShouldNotBe(null);
+            result.UserId.ShouldBe("renter34@gmail.com");
+            result.Tags[1].tagname.ShouldBe("New Tag");
+            result.Tags[1].weightage.ShouldBe(1);
+        }
+
+        [Fact]
         public async Task DeleteAsync()
         {
             // Act
