@@ -105,7 +105,7 @@ namespace InstaRent.Catalog.UserPreferences
             result.ShouldNotBe(null);
             result.UserId.ShouldBe("renter34@gmail.com");
             result.Tags[1].tagname.ShouldBe("New Tag");
-            result.Tags[1].weightage.ShouldBe(4);
+            result.Tags[1].weightage.ShouldBe(1);
         }
 
         [Fact]
