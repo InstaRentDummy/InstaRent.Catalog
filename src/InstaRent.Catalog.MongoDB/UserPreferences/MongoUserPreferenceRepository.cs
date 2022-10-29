@@ -52,7 +52,8 @@ namespace InstaRent.Catalog.UserPreferences
                 });
             });
 
-            return result.OrderBy(x => x.tags).ToList();
+            // return result.OrderBy(x => x.tags).ToList();
+            return result;
         }
 
         public async Task<List<UserPreference>> GetListAsync(

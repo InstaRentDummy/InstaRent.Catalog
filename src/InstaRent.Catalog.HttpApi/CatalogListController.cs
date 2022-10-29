@@ -42,7 +42,7 @@ namespace InstaRent.Catalog
 
         //GetRecommendationList
         [HttpGet]
-        [Route("recommendations/{userId}")]
+        [Route("recommendations")]
         public Task<PagedResultDto<BagDto>> GetRecommendationsAsync(GetUserRecommendationInput input)
         {
             return _catalogListAppService.GetRecommendationsAsync(input);
